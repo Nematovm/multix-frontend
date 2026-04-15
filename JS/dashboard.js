@@ -159,7 +159,7 @@ function startTest(testId, pdfUrl) {
         return;
     }
     // Tokenni URL ga qo'shib yuboramiz
-    window.open(`http://localhost:3000/test/${testId}?token=${token}`, '_blank');
+    window.open(`https://multix-test-app-production.up.railway.app/test/${testId}?token=${token}`, '_blank');
 }
 
 function filterPart(val) {
