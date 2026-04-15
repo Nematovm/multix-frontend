@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MultiX — CEFR Tayyorgarlik Platformasi</title>
+<link rel="stylesheet" href="./Static/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@700;800&family=Kanit:wght@700;800&display=swap" rel="stylesheet">
+<style>
+.mi-reading  { background:linear-gradient(135deg,#1a3a5c,#234d7a); color:#5bb8ff; }
+.mi-writing  { background:linear-gradient(135deg,#1a3a2c,#23613e); color:#4ede8a; }
+.mi-listen   { background:linear-gradient(135deg,#3a1a4d,#5c2878); color:#c47eff; }
+.mi-speaking { background:linear-gradient(135deg,#3d2a14,#6b4820); color:#ffaa55; }
+.mi-mock     { background:linear-gradient(135deg,#1d2f3a,#244155); color:#4ec8ff; }
+.mi-vocab    { background:linear-gradient(135deg,#2a1a3a,#4a2860); color:#e07fff; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="mainNav">
+  <img class="logo" src="./Logo/MultiX.svg" alt="">
+  <ul class="nav-links">
+    <li id="navPractice">
+      <button class="nav-dropdown-trigger" onclick="toggleDropdown('navPractice')">
+        Amaliyot Testlari
+        <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 8l5 5 5-5"/></svg>
+      </button>
+      <div class="mega-dropdown">
+        <div class="mega-header">CEFR ko'nikmalar bo'yicha</div>
+        <div class="mega-grid">
+          <a href="./Pages/dashboard.html" class="mega-item">
+            <span class="mega-icon mi-reading"><i class="fa-solid fa-book-open"></i></span>
+            <span class="mega-text">
+              <span class="mega-title">Reading Test <span class="mega-badge new">Faol</span></span>
+              <span class="mega-desc">Akademik matnlarni o'qib, savollarga javob bering</span>
+            </span>
+          </a>
+          <a href="#" class="mega-item locked">
+            <span class="mega-icon mi-writing"><i class="fa-solid fa-pen-nib"></i></span>
+            <span class="mega-text">
+              <span class="mega-title">Writing Test <span class="mega-badge soon">Tez Kunda</span></span>
+              <span class="mega-desc">Insholar yozing, AI tuzatsin va ball bersin</span>
+            </span>
+          </a>
+          <a href="./Pages/dashboard.html" class="mega-item">
+            <span class="mega-icon mi-listen"><i class="fa-solid fa-headphones-simple"></i></span>
+            <span class="mega-text">
+              <span class="mega-title">Listening Test <span class="mega-badge new">Faol</span></span>
+              <span class="mega-desc">Real audio parchalari, turli aksentlar bilan</span>
+            </span>
+          </a>
+          <a href="#" class="mega-item locked">
+            <span class="mega-icon mi-speaking"><i class="fa-solid fa-microphone-lines"></i></span>
+            <span class="mega-text">
+              <span class="mega-title">Speaking Test <span class="mega-badge soon">Tez Kunda</span></span>
+              <span class="mega-desc">AI suhbatdosh bilan real intervyu muhiti</span>
+            </span>
+          </a>
+          <a href="#" class="mega-item locked">
+            <span class="mega-icon mi-mock"><i class="fa-solid fa-circle-check"></i></span>
+            <span class="mega-text">
+              <span class="mega-title">To'liq Mock Imtihon <span class="mega-badge soon">Tez Kunda</span></span>
+              <span class="mega-desc">Timer bilan haqiqiy imtihon sharoiti</span>
+            </span>
+          </a>
+          <a href="#" class="mega-item locked">
+            <span class="mega-icon mi-vocab"><i class="fa-solid fa-spell-check"></i></span>
+            <span class="mega-text">
+              <span class="mega-title">Vocabulary Builder <span class="mega-badge soon">Tez Kunda</span></span>
+              <span class="mega-desc">CEFR darajasiga mos so'zlar va flashcard</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </li>
+    <li><a href="#features">Xususiyatlar</a></li>
+    <li><a href="#levels">CEFR Darajalari</a></li>
+    <li><a href="#testimonials">Sharhlar</a></li>
+    <li><a href="#team">Jamoa</a></li>
+    <li><a href="#plans">Narxlar</a></li>
+  </ul>
+  <a href="./Pages/auth.html" class="nav-cta">Bepul Boshlash →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-gradient"></div>
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="badge-dot"></div>CEFR A1 dan C1 gacha — To'liq Yo'l Xaritasi</div>
+    <h1>Ingliz tilini<br><span class="line-teal">professional darajada</span><br>egallang</h1>
+    <p>Shaxsiylashtirilgan o'quv rejalar, real imtihon simulyatorlari va AI-mentor bilan CEFR sertifikatiga erishish yanada oson.</p>
+    <div class="hero-actions">
+      <a href="./Pages/auth.html" class="btn-primary">
+        Bepul Sinab Ko'rish
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">0<span>K+</span></div><div class="stat-label">Faol O'quvchilar</div></div>
+      <div class="stat-item"><div class="stat-num">0<span>%</span></div><div class="stat-label">Muvaffaqiyat Darajasi</div></div>
+      <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">CEFR Darajasi</div></div>
+      <div class="stat-item"><div class="stat-num">0<span>h</span></div><div class="stat-label">O'rtacha Daraja Oshishi</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Nima uchun MultiX</div>
+      <h2 class="section-title">Boshqalardan farqli<br>yondashuv</h2>
+      <p class="section-sub">Sun'iy intellekt va pedagogik ekspertizani birlashtirgan platforma</p>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature-card"><div class="feature-icon"><i style="color:#2caa9a" class="fa-solid fa-brain"></i></div><h3>AI-Adaptiv O'qitish</h3><p>Har bir o'quvchining zaifligi va kuchini tahlil qilgan holda shaxsiylashtirilgan mashg'ulotlar yaratadi.</p></div>
+      <div class="feature-card"><div class="feature-icon"><i style="color:#2caa9a" class="fa-solid fa-crosshairs"></i></div><h3>Real Imtihon Simulyatori</h3><p>IELTS, TOEFL, Cambridge imtihonlariga mos real sharoitda to'liq amaliyot mashqlari.</p></div>
+      <div class="feature-card"><div class="feature-icon"><i style="color:#2caa9a" class="fa-solid fa-chart-column"></i></div><h3>Batafsil Analitika</h3><p>Har bir ko'nikmangiz bo'yicha chuqur tahlil va taraqqiyot grafiklari.</p></div>
+      <div class="feature-card"><div class="feature-icon"><i style="color:#2caa9a" class="fa-solid fa-comments"></i></div><h3>AI Speaking Coach</h3><p>Gapirish ko'nikmasini oshirish uchun AI suhbatdosh bilan real vaqtda feedback.</p></div>
+      <div class="feature-card"><div class="feature-icon"><i style="color:#2caa9a" class="fa-solid fa-pen-to-square"></i></div><h3>Writing Corrector</h3><p>Insholaring AI tomonidan grammatika, leksika va tuzilish bo'yicha tuzatiladi.</p></div>
+      <div class="feature-card"><div class="feature-icon"><i style="color:#2caa9a" class="fa-regular fa-clock"></i></div><h3>Haqiqiy Imtihon Vaqti</h3><p>Countdown timer va avtomatik bo'lim almashinuvi bilan real test muhitida mashq qiling.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CEFR LEVELS -->
+<section class="levels" id="levels">
+  <div class="container">
+    <div class="levels-flex">
+      <div class="levels-left reveal">
+        <div class="section-tag">CEFR Tizimi</div>
+        <h2 class="section-title">A1 dan C1 gacha<br>aniq yo'l</h2>
+        <p class="section-sub" style="margin-bottom:40px">Har bir daraja uchun maqsadli mashg'ulotlar va aniq mezonlar.</p>
+        <div class="level-bar">
+          <div class="level-badge" style="background:rgba(160,180,190,0.15);color:#7a9aaa">A1</div>
+          <div><div class="level-name">Boshlang'ich</div><div class="level-desc">Oddiy so'zlar va iboralar</div></div>
+          <div class="level-track"><div class="level-fill" style="width:16%;background:linear-gradient(90deg,#a0b4be,#b8c8d2)"></div></div>
+        </div>
+        <div class="level-bar">
+          <div class="level-badge" style="background:rgba(44,170,154,0.1);color:#2caa9a">A2</div>
+          <div><div class="level-name">Elementar</div><div class="level-desc">Kundalik mavzular</div></div>
+          <div class="level-track"><div class="level-fill" style="width:32%;background:linear-gradient(90deg,#64b4a0,#7ec5b0)"></div></div>
+        </div>
+        <div class="level-bar">
+          <div class="level-badge" style="background:rgba(44,170,154,0.14);color:#1d8a7c">B1</div>
+          <div><div class="level-name">O'rta daraja</div><div class="level-desc">Tanish mavzular bo'yicha</div></div>
+          <div class="level-track"><div class="level-fill" style="width:50%;background:linear-gradient(90deg,#2caa9a,#3dc9b7)"></div></div>
+        </div>
+        <div class="level-bar">
+          <div class="level-badge" style="background:rgba(44,170,154,0.2);color:#1d8a7c">B2</div>
+          <div><div class="level-name">O'rta-yuqori</div><div class="level-desc">Murakkab matnlar</div></div>
+          <div class="level-track"><div class="level-fill" style="width:66%;background:linear-gradient(90deg,#1d8a7c,#2caa9a)"></div></div>
+        </div>
+        <div class="level-bar">
+          <div class="level-badge" style="background:rgba(245,200,66,0.14);color:#a07200">C1</div>
+          <div><div class="level-name">Ilg'or</div><div class="level-desc">Professional darajada</div></div>
+          <div class="level-track"><div class="level-fill" style="width:82%;background:linear-gradient(90deg,#e0a800,#f5c842)"></div></div>
+        </div>
+      </div>
+      <div class="levels-right reveal reveal-delay-2">
+        <div style="background:#fff;border-radius:24px;padding:44px;border:1px solid #d8ecea;box-shadow:0 8px 32px rgba(44,170,154,0.1)">
+          <div style="font-size:12px;color:#1d8a7c;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:24px">Sizning darajangizni aniqlang</div>
+          <div style="font-family:'Roboto Slab',serif;font-size:26px;font-weight:800;margin-bottom:12px;color:#0f2230">Bepul diagnostika testi</div>
+          <p style="font-size:14px;color:#3a5566;line-height:1.7;margin-bottom:28px">15 daqiqalik test orqali hozirgi CEFR darajangizni bilib oling va shaxsiylashtirilgan o'quv rejangizni oling.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+            <div style="display:flex;align-items:center;gap:12px;font-size:13.5px;color:#3a5566"><div style="width:26px;height:26px;background:#eef9f7;border:1px solid #c8ede9;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1d8a7c;font-size:11px;flex-shrink:0">✓</div>Barcha 4 ko'nikma: reading, listening, writing, speaking</div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:13.5px;color:#3a5566"><div style="width:26px;height:26px;background:#eef9f7;border:1px solid #c8ede9;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1d8a7c;font-size:11px;flex-shrink:0">✓</div>Darhol natija va tavsiyalar</div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:13.5px;color:#3a5566"><div style="width:26px;height:26px;background:#eef9f7;border:1px solid #c8ede9;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1d8a7c;font-size:11px;flex-shrink:0">✓</div>To'liq bepul, ro'yxatdan o'tish shart emas</div>
+          </div>
+          <a href="./Pages/auth.html"><button class="btn-primary" style="width:100%;justify-content:center;border:none;cursor:pointer">Testni Boshlash →</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS — auto-scroll ticker ══ -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:56px">
+      <div class="section-tag" style="justify-content:center">O'quvchilar fikri</div>
+      <h2 class="section-title">Real natijalar,<br>real odamlar</h2>
+      <p class="section-sub" style="margin:0 auto">Platformamizdan foydalangan o'quvchilarning haqiqiy sharhlari</p>
+    </div>
+  </div>
+
+  <!-- Ticker track — duplicated for infinite loop -->
+  <div class="ticker-outer" id="tickerOuter">
+    <div class="ticker-track" id="tickerTrack">
+      <!-- JS injects cards here (approved feedbacks) -->
+      <!-- Fallback static cards shown while loading -->
+      <div class="tik-card">
+        <div class="tik-quote"><i class="fa-solid fa-quote-left"></i></div>
+        <p class="tik-text">Platformadan juda mamnunman! Reading testlari haqiqiy imtihon sharoitida — ajoyib.</p>
+        <div class="tik-author"><div class="tik-avatar" style="background:linear-gradient(135deg,#2caa9a,#1d8a7c)">S</div><div><div class="tik-name">Sarvar T.</div><div class="tik-role">B2 ✓</div></div></div>
+      </div>
+      <div class="tik-card">
+        <div class="tik-quote"><i class="fa-solid fa-quote-left"></i></div>
+        <p class="tik-text">3 oyda B1 dan C1 ga o'tdim. AI coach rostdan yordam berdi!</p>
+        <div class="tik-author"><div class="tik-avatar" style="background:linear-gradient(135deg,#f5c842,#e0a800)">M</div><div><div class="tik-name">Malika Y.</div><div class="tik-role">C1 ✓</div></div></div>
+      </div>
+      <div class="tik-card">
+        <div class="tik-quote"><i class="fa-solid fa-quote-left"></i></div>
+        <p class="tik-text">Listening mashqlari turli aksentlar bilan — haqiqiy imtihonga tayyor his qildim.</p>
+        <div class="tik-author"><div class="tik-avatar" style="background:linear-gradient(135deg,#9b59b6,#6c3483)">N</div><div><div class="tik-name">Nilufar E.</div><div class="tik-role">B2 ✓</div></div></div>
+      </div>
+      <div class="tik-card">
+        <div class="tik-quote"><i class="fa-solid fa-quote-left"></i></div>
+        <p class="tik-text">Adaptiv tizim zaif tomonlarimni aniqlab, aniq mashqlar bilan yaxshiladi. Zo'r!</p>
+        <div class="tik-author"><div class="tik-avatar" style="background:linear-gradient(135deg,#ff6b47,#e0461e)">A</div><div><div class="tik-name">Azizbek R.</div><div class="tik-role">B1 ✓</div></div></div>
+      </div>
+      <div class="tik-card">
+        <div class="tik-quote"><i class="fa-solid fa-quote-left"></i></div>
+        <p class="tik-text">Writing corrector esselarimni ancha yaxshiladi. Ustoz o'rnini bosdi desam bo'ladi.</p>
+        <div class="tik-author"><div class="tik-avatar" style="background:linear-gradient(135deg,#27ae60,#1e8449)">J</div><div><div class="tik-name">Jasur M.</div><div class="tik-role">C1 ✓</div></div></div>
+      </div>
+      <div class="tik-card">
+        <div class="tik-quote"><i class="fa-solid fa-quote-left"></i></div>
+        <p class="tik-text">A2 dan boshlagan edim, endi C1 testiga tayyorlanaman. Reja aniq, progress ko'rinib turibdi!</p>
+        <div class="tik-author"><div class="tik-avatar" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">D</div><div><div class="tik-name">Dilnoza K.</div><div class="tik-role">B2 ✓</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View More button -->
+  <div style="text-align:center;margin-top:44px">
+    <a href="./Pages/reviews.html" class="testimonials-viewmore-btn">
+      Barcha sharhlarni ko'rish
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="team">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Bizning Jamoa</div>
+      <h2 class="section-title">Tajribali murabbiylar<br>va texnologlar</h2>
+      <p class="section-sub">Pedagogika va sun'iy intellektni birlashtirgan ekspertlar jamoasi</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-img" style="background:linear-gradient(160deg,#d0ece9,#b8ddd8)"><img src="./team/MuhammadaliNematov.png" alt="Ne'matov Muhammadali"></div>
+        <div class="team-info">
+          <div class="team-name">Ne'matov Muhammadali</div>
+          <div class="team-role">CEO &amp; Asoschisi</div>
+          <div class="team-bio">CEFR B2 Sertifikat (62), 2+ yil tajriba, Startup Ambassador</div>
+          <div class="team-socials"><a class="social-btn" href="#"><i class="fa-brands fa-linkedin-in"></i></a><a class="social-btn" href="#"><i class="fa-brands fa-x-twitter"></i></a></div>
+        </div>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-img" style="background:linear-gradient(160deg,#d0ece9,#b8ddd8)"><img src="./team/BaxtiyorNomozov.png" alt="Baxtiyor Nomozov"></div>
+        <div class="team-info">
+          <div class="team-name">Baxtiyor Nomozov</div>
+          <div class="team-role">Co-founder &amp; Marketing Lead</div>
+          <div class="team-bio">Raqamli marketing va auditoriya jalb qilish bo'yicha tajriba, ijtimoiy tarmoqlar strategiyalari ustida ishlaydi.</div>
+          <div class="team-socials"><a class="social-btn" href="#"><i class="fa-brands fa-linkedin-in"></i></a><a class="social-btn" href="#"><i class="fa-brands fa-x-twitter"></i></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PLANS — single premium plan ══ -->
+<section class="plans" id="plans">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <div class="section-tag" style="justify-content:center">Narxlar</div>
+      <h2 class="section-title">Barcha imkoniyatlar —<br>bitta rejada</h2>
+      <p class="section-sub" style="margin:0 auto 56px">Premium a'zolik bilan barcha testlar va AI vositalariga cheksiz kirish</p>
+    </div>
+
+    <div class="plan-solo-wrap reveal">
+      <!-- Left: features list -->
+      <div class="plan-solo-left">
+        <div class="plan-solo-tag">Nimalar kiradi?</div>
+        <ul class="plan-solo-features">
+          <li><span class="psf-check"><i class="fa-solid fa-check"></i></span><div><strong>Barcha daraja testlari</strong><span>A1 dan C1 gacha — cheksiz</span></div></li>
+          <li><span class="psf-check"><i class="fa-solid fa-check"></i></span><div><strong>Cheksiz mock imtihonlar</strong><span>Timer bilan real sharoit</span></div></li>
+          <li><span class="psf-check"><i class="fa-solid fa-check"></i></span><div><strong>AI Speaking Coach</strong><span>Real vaqtda feedback va tuzatish</span></div></li>
+          <li><span class="psf-check"><i class="fa-solid fa-check"></i></span><div><strong>Writing Corrector</strong><span>Grammatika va leksika tahlili</span></div></li>
+          <li><span class="psf-check"><i class="fa-solid fa-check"></i></span><div><strong>Chuqur analitika</strong><span>Har bir ko'nikma bo'yicha grafiklar</span></div></li>
+          <li><span class="psf-check"><i class="fa-solid fa-check"></i></span><div><strong>CEFR sertifikati</strong><span>Muvaffaqiyat tasdig'i</span></div></li>
+        </ul>
+      </div>
+
+      <!-- Right: price card -->
+      <div class="plan-solo-card">
+        <div class="plan-solo-badge">Premium</div>
+        <div class="plan-solo-price">
+          <span class="psp-currency">UZS</span>
+          <span class="psp-amount">70 000</span>
+        </div>
+        <div class="plan-solo-period">/ oyiga</div>
+
+        <div class="plan-solo-divider"></div>
+
+        <div class="plan-solo-guarantee">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>14 kunlik bepul sinov · Istalgan vaqt bekor qilish</span>
+        </div>
+
+        <a href="./Pages/auth.html" class="plan-solo-btn">
+          Hozir Boshlash
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+
+        <p class="plan-solo-note">Kredit karta shart emas</p>
+
+        <!-- decorative orbs -->
+        <div class="psc-orb psc-orb-1"></div>
+        <div class="psc-orb psc-orb-2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="join">
+  <div class="cta-rings">
+    <div class="cta-ring" style="width:300px;height:300px;animation-delay:0s"></div>
+    <div class="cta-ring" style="width:500px;height:500px;animation-delay:1.3s"></div>
+    <div class="cta-ring" style="width:700px;height:700px;animation-delay:2.6s"></div>
+  </div>
+  <div class="cta-inner reveal">
+    <div class="section-tag" style="justify-content:center">Qo'shiling</div>
+    <h2>Ingliz tilingizdagi<br>o'zgarish <span style="color:#3dc9b7">bugun</span><br>boshlanadi</h2>
+    <p>0+ o'quvchi allaqachon o'zining CEFR maqsadiga erishmoqda. Navbat sizda.</p>
+    <div class="cta-btns">
+      <a href="./Pages/auth.html" class="btn-primary" style="font-size:16px;padding:18px 44px">
+        Hoziroq Boshlash — Bepul
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div style="margin-top:36px;font-size:13px;color:rgba(255,255,255,0.35);display:flex;gap:24px;justify-content:center;flex-wrap:wrap">
+      <span>✓ Kredit karta shart emas</span>
+      <span>✓ Istalgan vaqt bekor qilish</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo" style="color:#fff">Multi<span>X</span></div>
+      <p>CEFR tayyorgarlik platformasi — A1 dan C1 gacha shaxsiylashtirilgan yo'l xaritasi bilan.</p>
+    </div>
+    <div class="footer-col"><h4>Platforma</h4><ul><li><a href="#">Xususiyatlar</a></li><li><a href="#">CEFR Darajalari</a></li><li><a href="#">Imtihon Simulyatori</a></li><li><a href="#">AI Coach</a></li><li><a href="#">Analitika</a></li></ul></div>
+    <div class="footer-col"><h4>Kompaniya</h4><ul><li><a href="#">Biz haqimizda</a></li><li><a href="#">Jamoa</a></li><li><a href="#">Blog</a></li><li><a href="#">Karyera</a></li><li><a href="#">Hamkorlik</a></li></ul></div>
+    <div class="footer-col"><h4>Yordam</h4><ul><li><a href="#">Qo'llanma</a></li><li><a href="#">FAQ</a></li><li><a href="#">Murojaat</a></li><li><a href="#">Maxfiylik siyosati</a></li><li><a href="#">Foydalanish shartlari</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 MultiX. Barcha huquqlar himoyalangan.</div>
+    <div class="footer-langs">
+      <button class="lang-btn active">O'zbek</button>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══ CURSOR ══ */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+(function animateRing(){ rx+=(mx-rx)*.1; ry+=(my-ry)*.1; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animateRing); })();
+const hoverEls='a,button,.feature-card,.tcard,.team-card,.plan-card,.level-bar,.mega-item,.tik-card';
+document.querySelectorAll(hoverEls).forEach(el=>{ el.addEventListener('mouseenter',()=>{ cursor.classList.add('hover'); ring.classList.add('hover'); }); el.addEventListener('mouseleave',()=>{ cursor.classList.remove('hover'); ring.classList.remove('hover'); }); });
+document.addEventListener('mousedown',()=>ring.classList.add('clicking'));
+document.addEventListener('mouseup',()=>ring.classList.remove('clicking'));
+
+/* ══ DROPDOWN ══ */
+function toggleDropdown(id){ const li=document.getElementById(id); const isOpen=li.classList.contains('open'); document.querySelectorAll('.nav-links > li').forEach(l=>l.classList.remove('open')); if(!isOpen) li.classList.add('open'); }
+document.addEventListener('click',e=>{ if(!e.target.closest('.nav-links')) document.querySelectorAll('.nav-links > li').forEach(l=>l.classList.remove('open')); });
+
+/* ══ HERO CANVAS ══ */
+const canvas=document.getElementById('heroCanvas'); const ctx=canvas.getContext('2d');
+function resize(){ canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight; }
+resize(); window.addEventListener('resize',resize);
+let mouse={x:window.innerWidth/2,y:window.innerHeight/2};
+canvas.parentElement.addEventListener('mousemove',e=>{ const r=canvas.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; });
+const nodes=Array.from({length:80},()=>({ x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4, r:Math.random()*2.5+.5, op:Math.random()*.5+.2 }));
+(function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); nodes.forEach(n=>{ n.x+=n.vx; n.y+=n.vy; const dx=n.x-mouse.x,dy=n.y-mouse.y,d=Math.hypot(dx,dy); if(d<120){const f=(120-d)/120; n.vx+=(dx/d)*f*.4; n.vy+=(dy/d)*f*.4;} if(Math.hypot(n.vx,n.vy)>1.5){n.vx*=.95;n.vy*=.95;} n.vx*=.99; n.vy*=.99; if(n.x<0||n.x>canvas.width) n.vx*=-1; if(n.y<0||n.y>canvas.height) n.vy*=-1; n.x=Math.max(0,Math.min(canvas.width,n.x)); n.y=Math.max(0,Math.min(canvas.height,n.y)); }); for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){ const a=nodes[i],b=nodes[j],d=Math.hypot(a.x-b.x,a.y-b.y); if(d<140){ctx.beginPath();ctx.strokeStyle=`rgba(44,170,154,${(1-d/140)*.18})`;ctx.lineWidth=.8;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();} } nodes.forEach(n=>{ const d=Math.hypot(n.x-mouse.x,n.y-mouse.y),glow=d<120?1-d/120:0; ctx.beginPath();ctx.arc(n.x,n.y,n.r+glow*2,0,Math.PI*2); ctx.fillStyle=`rgba(44,170,154,${n.op+glow*.4})`;ctx.fill(); if(glow>.3){ctx.beginPath();ctx.arc(n.x,n.y,n.r+6,0,Math.PI*2);ctx.fillStyle=`rgba(44,170,154,${glow*.08})`;ctx.fill();} }); requestAnimationFrame(draw); })();
+
+/* ══ SCROLL REVEAL ══ */
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* ══ NAV SCROLL ══ */
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60));
+
+/* ══ SMOOTH SCROLL ══ */
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{ const t=document.querySelector(a.getAttribute('href')); if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});} }));
+
+/* ══ TESTIMONIALS TICKER ══ */
+(async function initTicker(){
+  const API = 'http://127.0.0.1:8000';
+  const track = document.getElementById('tickerTrack');
+
+  // Try to load approved feedbacks from API
+  try {
+    const res = await fetch(`${API}/feedback/approved`);
+    if(res.ok){
+      const feedbacks = await res.json();
+      if(feedbacks.length >= 2){
+        // Replace static cards with live data
+        const colors = [
+          'linear-gradient(135deg,#2caa9a,#1d8a7c)',
+          'linear-gradient(135deg,#f5c842,#e0a800)',
+          'linear-gradient(135deg,#9b59b6,#6c3483)',
+          'linear-gradient(135deg,#ff6b47,#e0461e)',
+          'linear-gradient(135deg,#27ae60,#1e8449)',
+          'linear-gradient(135deg,#3498db,#1a5276)',
+          'linear-gradient(135deg,#e74c3c,#c0392b)',
+        ];
+        track.innerHTML = feedbacks.map((fb, i) => `
+          <div class="tik-card">
+            <div class="tik-quote"><i class="fa-solid fa-quote-left"></i></div>
+            <p class="tik-text">${fb.message}</p>
+            <div class="tik-author">
+              <div class="tik-avatar" style="background:${colors[i % colors.length]}">${(fb.user_name||'A').charAt(0).toUpperCase()}</div>
+              <div>
+                <div class="tik-name">${fb.user_name || 'Anonymous'}</div>
+                ${fb.rating ? `<div class="tik-role">${'★'.repeat(fb.rating)}${'☆'.repeat(5-fb.rating)}</div>` : '<div class="tik-role">MultiX o\'quvchisi</div>'}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+  } catch(e){}
+
+  // Duplicate cards for seamless loop
+  track.innerHTML += track.innerHTML;
+
+  // Pause on hover
+  const outer = document.getElementById('tickerOuter');
+  outer.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
+  outer.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
+})();
+</script>
+</body>
+</html>

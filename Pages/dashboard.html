@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MultiX — Dashboard</title>
+<link rel="stylesheet" href="../Static/dashboard.css">
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@700;800&family=Kanit:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+</head>
+<body>
+
+<!-- ── AUTH GATE MODAL ───────────────────────────── -->
+<div class="auth-gate" id="authGate">
+  <div class="ag-backdrop" onclick="closeGate()"></div>
+  <div class="ag-modal">
+    <button class="ag-close" onclick="closeGate()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="ag-icon"><i class="fa-solid fa-lock"></i></div>
+    <h3>Sign in to start this test</h3>
+    <p>Create a free account or sign in to track your progress and access all practice tests.</p>
+    <div class="ag-btns">
+      <a href="auth.html" class="ag-btn primary">Sign In / Register</a>
+      <button class="ag-btn ghost" onclick="closeGate()">Maybe later</button>
+    </div>
+    <p class="ag-note">Free account — no credit card required</p>
+  </div>
+</div>
+
+<!-- ── LAYOUT ────────────────────────────────────── -->
+<div class="db-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="db-sidebar" id="sidebar">
+    <div class="sb-logo">
+      <a href="../index.html" class="sb-logo-link"><img src="../Logo/MultiX.svg" alt="MultiX Logo"></a>
+    </div>
+
+    <nav class="sb-nav">
+  <div class="sb-section-label">Practice Tests</div>
+  <a href="#" class="sb-item active" data-section="reading">
+    <span class="sb-icon" style="color:#5bb8ff"><i class="fa-solid fa-book-open"></i></span>
+    Reading
+  </a>
+  <!-- <a href="#" class="sb-item" data-section="listening">
+    <span class="sb-icon" style="color:#c47eff"><i class="fa-solid fa-headphones-simple"></i></span>
+    Listening
+  </a> -->
+  <a href="#" class="sb-item sb-soon">
+    <span class="sb-icon" style="color:#c47eff"><i class="fa-solid fa-pen-nib"></i></span>
+    Listening
+    <span class="sb-badge">Soon</span>
+  </a>
+  <a href="#" class="sb-item sb-soon">
+    <span class="sb-icon" style="color:#4ede8a"><i class="fa-solid fa-pen-nib"></i></span>
+    Writing
+    <span class="sb-badge">Soon</span>
+  </a>
+  <a href="#" class="sb-item sb-soon">
+    <span class="sb-icon" style="color:#ffaa55"><i class="fa-solid fa-microphone-lines"></i></span>
+    Speaking
+    <span class="sb-badge">Soon</span>
+  </a>
+</nav>
+
+    <!-- user profile block -->
+    <div class="sb-user">
+      <div class="sb-user-avatar">G</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name">Guest User</div>
+        <div class="sb-user-role">Free Plan</div>
+      </div>
+      <button class="sb-user-menu" onclick="toggleUserMenu()">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <!-- dropdown -->
+<div class="sb-user-dropdown hidden" id="userDropdown">
+  <a href="profile.html"><i class="fa-regular fa-user"></i> My Profile</a>
+  <a href="sessions.html"><i class="fa-regular fa-clock"></i> My Sessions</a>
+  <div class="sb-dd-divider"></div>
+  <a href="#" onclick="signOut()" class="sb-dd-signout"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
+</div>
+    </div>
+  </aside>
+
+
+
+  <!-- MAIN CONTENT -->
+  <main class="db-main">
+
+    <!-- TOP BAR -->
+    <header class="db-header">
+      <div class="dbh-left">
+        <button class="dbh-back" onclick="window.location.href='../index.html'">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+        <h1 class="dbh-title" id="sectionTitle">Reading</h1>
+      </div>
+      <div class="dbh-right"></div>
+    </header>
+
+    <!-- FILTER TABS -->
+    <div class="db-tabs">
+      <button class="tab-btn active" onclick="filterTab(this,'all')">All Tests</button>
+      <button class="tab-btn" onclick="filterTab(this,'free')">
+        <i class="fa-solid fa-gift"></i> Free
+      </button>
+      <button class="tab-btn" onclick="filterTab(this,'premium')">
+        <i class="fa-solid fa-lock"></i> Premium
+      </button>
+    </div>
+
+    <!-- FILTER ROW -->
+<div class="db-filters">
+  <div class="filter-search">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" placeholder="Search tests..." oninput="searchTests(this.value)">
+  </div>
+  <div class="filter-select-wrap">
+    <select class="filter-select" onchange="filterLevel(this.value)">
+      <option value="">All Levels</option>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+    <i class="fa-solid fa-chevron-down filter-select-icon"></i>
+  </div>
+  <div class="filter-select-wrap">
+    <select class="filter-select" onchange="filterPart(this.value)">
+      <option value="">All Parts</option>
+      <option value="1">Part 1</option>
+      <option value="2">Part 2</option>
+      <option value="3">Part 3</option>
+      <option value="4">Part 4</option>
+      <option value="5">Part 5</option>
+      <!-- <option value="6">Part 6</option> -->
+    </select>
+    <i class="fa-solid fa-chevron-down filter-select-icon"></i>
+  </div>
+  <div class="filter-select-wrap">
+    <select class="filter-select">
+      <option>All Types</option>
+      <option>Academic</option>
+      <option>General</option>
+    </select>
+    <i class="fa-solid fa-chevron-down filter-select-icon"></i>
+  </div>
+</div>
+
+
+<!-- TEST LIST -->
+<div class="db-content" id="testContent">
+  <div class="tests-empty">
+    <div class="te-icon"><i class="fa-solid fa-box-open"></i></div>
+    <h3>No tests available yet</h3>
+    <p>Tests will appear here once they are added by the admin.</p>
+  </div>
+</div>
+  </main>
+</div>
+
+<script>
+/* ── SIDEBAR SECTION SWITCH ─────────────────────── */
+document.querySelectorAll('.sb-item').forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    if (item.classList.contains('sb-soon')) return;
+    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const section = item.dataset.section;
+    document.getElementById('sectionTitle').textContent =
+      section.charAt(0).toUpperCase() + section.slice(1);
+  });
+});
+
+/* ── AUTH GATE ──────────────────────────────────── */
+function showGate() {
+  document.getElementById('authGate').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+function closeGate() {
+  document.getElementById('authGate').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+/* Check if user is logged in (simulate with sessionStorage) */
+const isLoggedIn = !!localStorage.getItem('cp_token');
+
+function startTest(btn) {
+  if (!isLoggedIn) {
+    showGate();
+    return;
+  }
+  // proceed to test page
+  alert('Loading test... (connect to your test page here)');
+}
+
+/* ── TAB FILTER ─────────────────────────────────── */
+function filterTab(btn, type) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.test-card').forEach(card => {
+    if (type === 'all' || card.dataset.type === type) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  updateGroupCounts();
+}
+
+/* ── LEVEL FILTER ───────────────────────────────── */
+function filterLevel(val) {
+  document.querySelectorAll('.test-card').forEach(card => {
+    if (!val || card.dataset.level === val) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  updateGroupCounts();
+}
+
+/* ── SEARCH ─────────────────────────────────────── */
+function searchTests(q) {
+  const lq = q.toLowerCase();
+  document.querySelectorAll('.test-card').forEach(card => {
+    const name = card.querySelector('.tc-name').textContent.toLowerCase();
+    card.style.display = name.includes(lq) ? '' : 'none';
+  });
+  updateGroupCounts();
+}
+
+/* Update visible counts in group headers */
+function updateGroupCounts() {
+  document.querySelectorAll('.test-group').forEach(group => {
+    const visible = [...group.querySelectorAll('.test-card')].filter(c => c.style.display !== 'none').length;
+    group.querySelector('.tg-count').textContent = visible + ' test' + (visible !== 1 ? 's' : '');
+  });
+}
+
+/* ── TOGGLE GROUP ───────────────────────────────── */
+function toggleGroup(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.tg-chevron');
+  body.classList.toggle('collapsed');
+  icon.style.transform = body.classList.contains('collapsed') ? 'rotate(180deg)' : '';
+}
+
+/* ── USER MENU ──────────────────────────────────── */
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('hidden');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.sb-user')) {
+    const dd = document.getElementById('userDropdown');
+    if (dd) dd.classList.add('hidden');
+  }
+});
+</script>
+<script src="../JS/dashboard.js"></script>
+</body>
+</html>

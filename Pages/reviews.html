@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MultiX — O'quvchilar Sharhlari</title>
+<link rel="stylesheet" href="../Static/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@700;800&family=Kanit:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* ── PAGE ── */
+.reviews-page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding-top: 96px;
+}
+
+.reviews-hero {
+  background: linear-gradient(160deg, #0d1f2d 0%, #1a3a4a 100%);
+  padding: 72px 60px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.reviews-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(44,170,154,0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.reviews-hero-inner { position: relative; z-index: 1; }
+.reviews-hero h1 {
+  font-family: "Roboto Slab", serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -1.5px;
+}
+.reviews-hero p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+}
+
+/* Grid */
+.reviews-grid-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 40px 80px;
+}
+
+.reviews-grid {
+  columns: 3;
+  column-gap: 20px;
+}
+
+.rv-card {
+  break-inside: avoid;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 24px 22px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.rv-card::before {
+  content: '"';
+  position: absolute;
+  top: -8px; right: 16px;
+  font-size: 80px;
+  font-family: "Roboto Slab", serif;
+  color: rgba(44,170,154,0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.rv-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 36px rgba(44,170,154,0.1);
+  border-color: var(--teal-soft);
+}
+
+.rv-quote-icon {
+  color: var(--teal);
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+.rv-text {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-2);
+}
+
+.rv-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.rv-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+  color: #fff; flex-shrink: 0;
+}
+.rv-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.rv-stars { font-size: 12px; color: var(--gold); margin-top: 2px; }
+
+/* empty state */
+.rv-empty {
+  text-align: center;
+  color: var(--text-3);
+  padding: 80px 20px;
+  font-size: 15px;
+}
+.rv-empty i { font-size: 40px; display: block; margin-bottom: 16px; opacity: 0.3; }
+
+/* Loader */
+.rv-loader {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+.rv-loader-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--teal);
+  margin: 0 4px;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+.rv-loader-dot:nth-child(2) { animation-delay: 0.2s; }
+.rv-loader-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+/* Back nav */
+.rv-nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(244,250,249,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+.rv-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500;
+  color: var(--text-2); text-decoration: none;
+  transition: color 0.2s;
+}
+.rv-back:hover { color: var(--teal-dark); }
+.rv-logo {
+  font-family: "Roboto Slab", serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--text); text-decoration: none;
+}
+.rv-logo span { color: var(--teal); }
+
+@media (max-width: 900px) {
+  .reviews-hero { padding: 48px 24px 56px; }
+  .reviews-grid { columns: 1; }
+  .reviews-grid-wrap { padding: 32px 20px 60px; }
+  .rv-nav { padding: 0 20px; }
+}
+@media (min-width: 600px) and (max-width: 900px) {
+  .reviews-grid { columns: 2; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="rv-nav">
+  <a href="../index.html" class="rv-back"><i class="fa-solid fa-arrow-left"></i> Bosh sahifaga qaytish</a>
+  <a href="../index.html" class="rv-logo">Multi<span>X</span></a>
+  <div></div>
+</nav>
+
+<!-- HERO -->
+<div class="reviews-hero">
+  <div class="reviews-hero-inner">
+    <h1>O'quvchilar Sharhlari</h1>
+    <p>Platformamizdan foydalangan o'quvchilarning haqiqiy fikrlari</p>
+  </div>
+</div>
+
+<!-- REVIEWS GRID -->
+<div class="reviews-grid-wrap">
+  <div class="rv-loader" id="rvLoader">
+    <div class="rv-loader-dot"></div>
+    <div class="rv-loader-dot"></div>
+    <div class="rv-loader-dot"></div>
+  </div>
+  <div class="reviews-grid" id="reviewsGrid" style="display:none"></div>
+</div>
+
+<script>
+const API = 'http://127.0.0.1:8000';
+const colors = [
+  'linear-gradient(135deg,#2caa9a,#1d8a7c)',
+  'linear-gradient(135deg,#f5c842,#e0a800)',
+  'linear-gradient(135deg,#9b59b6,#6c3483)',
+  'linear-gradient(135deg,#ff6b47,#e0461e)',
+  'linear-gradient(135deg,#27ae60,#1e8449)',
+  'linear-gradient(135deg,#3498db,#1a5276)',
+  'linear-gradient(135deg,#e74c3c,#c0392b)',
+  'linear-gradient(135deg,#1abc9c,#16a085)',
+];
+
+(async function loadReviews(){
+  const loader = document.getElementById('rvLoader');
+  const grid   = document.getElementById('reviewsGrid');
+
+  try {
+    const res = await fetch(`${API}/feedback/approved`);
+    if(!res.ok) throw new Error();
+    const feedbacks = await res.json();
+
+    loader.style.display = 'none';
+    grid.style.display = '';
+
+    if(!feedbacks.length){
+      grid.innerHTML = `<div class="rv-empty"><i class="fa-regular fa-comment"></i>Hali sharhlar yo'q</div>`;
+      return;
+    }
+
+    grid.innerHTML = feedbacks.map((fb, i) => `
+      <div class="rv-card">
+        <div class="rv-quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+        <p class="rv-text">${fb.message}</p>
+        <div class="rv-meta">
+          <div class="rv-avatar" style="background:${colors[i % colors.length]}">${(fb.user_name||'A').charAt(0).toUpperCase()}</div>
+          <div>
+            <div class="rv-name">${fb.user_name || 'Anonymous'}</div>
+            ${fb.rating ? `<div class="rv-stars">${'★'.repeat(fb.rating)}${'☆'.repeat(5-fb.rating)}</div>` : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+  } catch(e) {
+    loader.style.display = 'none';
+    grid.style.display = '';
+    grid.innerHTML = `<div class="rv-empty"><i class="fa-solid fa-triangle-exclamation"></i>Sharhlarni yuklashda xato. Qayta urinib ko'ring.</div>`;
+  }
+})();
+</script>
+</body>
+</html>

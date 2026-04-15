@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Attempt — ClearPath</title>
+<link rel="stylesheet" href="../Static/dashboard.css">
+<link rel="stylesheet" href="../Static/review.css">
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+</head>
+<body>
+<div class="rv-root">
+
+  <!-- HEADER -->
+  <header class="rv-header">
+    <div class="rv-header-left">
+      <button class="rv-btn-back" onclick="history.back()">
+        <i class="fa-solid fa-arrow-left"></i> Back to Results
+      </button>
+      <button class="rv-btn-back secondary" onclick="window.location.href='dashboard.html'">
+        Back to Reading Tests
+      </button>
+      <div class="rv-ielts-badge">IELTS</div>
+      <span class="rv-taker-id" id="rvTestName">Loading...</span>
+    </div>
+    <div class="rv-header-right">
+      <label class="rv-toggle-wrap" id="showCorrectWrap">
+        <input type="checkbox" id="showCorrectToggle" onchange="toggleShowCorrect(this.checked)">
+        <span class="rv-toggle-track"><span class="rv-toggle-thumb"></span></span>
+        <span class="rv-toggle-label">Show Correct Answers</span>
+      </label>
+      <button class="rv-btn-icon" onclick="redoTest()" title="Re-Do test">
+        <i class="fa-solid fa-rotate-right"></i> Re-Do test
+      </button>
+      <button class="rv-btn-icon" onclick="history.back()" title="Return results">
+        <i class="fa-solid fa-lock"></i> Return results
+      </button>
+    </div>
+  </header>
+
+  <!-- LOADING -->
+  <div id="rvLoading" class="rv-loading">
+    <div class="rv-spinner"></div>
+    <span>Loading review...</span>
+  </div>
+
+  <!-- CONTENT (hidden until loaded) -->
+  <div id="rvContent" class="rv-content" style="display:none">
+
+    <!-- Part header bar -->
+    <div class="rv-part-bar" id="rvPartBar">
+      <div class="rv-part-info">
+        <span class="rv-part-label" id="rvPartLabel">Part 1</span>
+        <span class="rv-part-instruction" id="rvPartInstruction"></span>
+      </div>
+    </div>
+
+    <!-- Two-panel layout: passage left, questions right -->
+    <div class="rv-layout" id="rvLayout">
+      <!-- Chap: Passage -->
+      <div class="rv-passage-col" id="rvPassageCol">
+        <div class="rv-passage-title" id="rvPassageTitle"></div>
+        <div class="rv-passage-subtitle" id="rvPassageSubtitle"></div>
+        <div class="rv-passage-text" id="rvPassageText"></div>
+      </div>
+
+      <!-- O'ng: Savollar -->
+      <div class="rv-questions-col" id="rvQuestionsCol"></div>
+    </div>
+
+    <!-- Part navigation (bottom) -->
+    <div class="rv-part-nav" id="rvPartNav"></div>
+
+  </div>
+
+</div>
+<script src="../JS/review.js"></script>
+</body>
+</html>
