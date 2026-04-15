@@ -1,4 +1,4 @@
-const API_URL = 'https://multix-backend.onrender.com';
+const API_URL = 'https://valiant-expression-production-a4f5.up.railway.app';
 
 // ── Toast ──
 function showToast(message, type = 'success') {
