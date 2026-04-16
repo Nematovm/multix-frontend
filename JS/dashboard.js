@@ -1,4 +1,4 @@
-const API_URL = 'https://valiant-expression-production-a4f5.up.railway.app';
+const API_URL = 'https://api.multx.uz';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('cp_token');
