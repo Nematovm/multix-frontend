@@ -134,12 +134,7 @@ function renderTests(tests) {
                                 <span class="tc-tag"><i class="fa-regular fa-clock"></i> ${t.duration || 60} min</span>
                                 <span class="tc-tag"><i class="fa-regular fa-circle-check"></i> ${t.questions_count || 35} questions</span>
                             </div>
-${t.telegram_link ? `
-<div style="margin-top:8px">
-    <a href="${t.telegram_link}" target="_blank" class="tg-link-btn">
-        <i class="fa-brands fa-telegram"></i> ${t.telegram_channel || 'Telegram'}
-    </a>
-</div>` : ''}
+
                         </div>
                         ${t.type === 'premium'
                             ? `<button class="tc-btn premium-lock" onclick="showGate()"><i class="fa-solid fa-lock"></i> Unlock</button>`
