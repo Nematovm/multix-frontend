@@ -80,6 +80,11 @@ nav.scrolled {
   margin-top: -3px;
 }
 
+.logo img {
+  height: 100%;
+  width: auto;
+}
+
 .nav-links {
   display: flex;
   align-items: center;

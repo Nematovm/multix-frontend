@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
 <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@700;800&family=Kanit:wght@700;800&display=swap" rel="stylesheet">
 <style>
-/* ── PAGE ── */
 .reviews-page {
   min-height: 100vh;
   background: var(--bg);
@@ -44,7 +43,6 @@
   font-weight: 300;
 }
 
-/* Grid */
 .reviews-grid-wrap {
   max-width: 1200px;
   margin: 0 auto;
@@ -114,9 +112,9 @@
   color: #fff; flex-shrink: 0;
 }
 .rv-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.rv-level { font-size: 11px; color: var(--teal); font-weight: 600; margin-top: 2px; }
 .rv-stars { font-size: 12px; color: var(--gold); margin-top: 2px; }
 
-/* empty state */
 .rv-empty {
   text-align: center;
   color: var(--text-3);
@@ -125,7 +123,6 @@
 }
 .rv-empty i { font-size: 40px; display: block; margin-bottom: 16px; opacity: 0.3; }
 
-/* Loader */
 .rv-loader {
   display: flex;
   justify-content: center;
@@ -145,7 +142,6 @@
   40%           { transform: scale(1);   opacity: 1; }
 }
 
-/* Back nav */
 .rv-nav {
   position: fixed; top: 0; left: 0; right: 0;
   height: 64px;
@@ -210,7 +206,52 @@
 
 <script>
 const API = 'https://api.multx.uz';
-const colors = [
+
+// ── 5 ta demo sharh ──
+const DEMO_REVIEWS = [
+  {
+    id: 'demo_1',
+    user_name: 'Dilnoza K.',
+    level: 'B2',
+    message: "A2 dan boshlagan edim, endi C1 testiga tayyorlanaman. Reja aniq, progress ko'rinib turibdi!",
+    rating: 5,
+    isDemo: true
+  },
+  {
+    id: 'demo_2',
+    user_name: 'Azizbek R.',
+    level: 'B1',
+    message: "Adaptiv tizim zaif tomonlarimni aniqlab, aniq mashqlar bilan yaxshiladi. Zo'r!",
+    rating: 5,
+    isDemo: true
+  },
+  {
+    id: 'demo_3',
+    user_name: 'Jasur M.',
+    level: 'C1',
+    message: "Writing corrector esselarimni ancha yaxshiladi. Ustoz o'rnini bosdi desam bo'ladi.",
+    rating: 5,
+    isDemo: true
+  },
+  {
+    id: 'demo_4',
+    user_name: 'Sarvar T.',
+    level: 'B2',
+    message: "Platformadan juda mamnunman. Reading testlari haqiqiy imtihon sharoitida — ajoyib.",
+    rating: 5,
+    isDemo: true
+  },
+  {
+    id: 'demo_5',
+    user_name: 'Nilufar E.',
+    level: 'B1',
+    message: "Listening mashqlari turli aksentlar bilan keladi. Haqiqiy imtihonga tayyor his etaman o'zimni.",
+    rating: 5,
+    isDemo: true
+  }
+];
+
+const COLORS = [
   'linear-gradient(135deg,#2caa9a,#1d8a7c)',
   'linear-gradient(135deg,#f5c842,#e0a800)',
   'linear-gradient(135deg,#9b59b6,#6c3483)',
@@ -221,42 +262,59 @@ const colors = [
   'linear-gradient(135deg,#1abc9c,#16a085)',
 ];
 
-(async function loadReviews(){
+function renderCard(fb, colorIndex) {
+  const initial = (fb.user_name || 'A').charAt(0).toUpperCase();
+  const stars = fb.rating
+    ? `<div class="rv-stars">${'★'.repeat(fb.rating)}${'☆'.repeat(5 - fb.rating)}</div>`
+    : '';
+  const level = fb.level
+    ? `<div class="rv-level">${fb.level} ✓</div>`
+    : '';
+
+  return `
+    <div class="rv-card">
+      <div class="rv-quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+      <p class="rv-text">${fb.message}</p>
+      <div class="rv-meta">
+        <div class="rv-avatar" style="background:${COLORS[colorIndex % COLORS.length]}">${initial}</div>
+        <div>
+          <div class="rv-name">${fb.user_name || 'Anonymous'}</div>
+          ${level}
+          ${stars}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+(async function loadReviews() {
   const loader = document.getElementById('rvLoader');
   const grid   = document.getElementById('reviewsGrid');
 
+  let realReviews = [];
+
   try {
     const res = await fetch(`${API}/feedback/approved`);
-    if(!res.ok) throw new Error();
-    const feedbacks = await res.json();
-
-    loader.style.display = 'none';
-    grid.style.display = '';
-
-    if(!feedbacks.length){
-      grid.innerHTML = `<div class="rv-empty"><i class="fa-regular fa-comment"></i>Hali sharhlar yo'q</div>`;
-      return;
+    if (res.ok) {
+      realReviews = await res.json();
     }
-
-    grid.innerHTML = feedbacks.map((fb, i) => `
-      <div class="rv-card">
-        <div class="rv-quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-        <p class="rv-text">${fb.message}</p>
-        <div class="rv-meta">
-          <div class="rv-avatar" style="background:${colors[i % colors.length]}">${(fb.user_name||'A').charAt(0).toUpperCase()}</div>
-          <div>
-            <div class="rv-name">${fb.user_name || 'Anonymous'}</div>
-            ${fb.rating ? `<div class="rv-stars">${'★'.repeat(fb.rating)}${'☆'.repeat(5-fb.rating)}</div>` : ''}
-          </div>
-        </div>
-      </div>
-    `).join('');
-
-  } catch(e) {
-    loader.style.display = 'none';
-    grid.style.display = '';
-    grid.innerHTML = `<div class="rv-empty"><i class="fa-solid fa-triangle-exclamation"></i>Sharhlarni yuklashda xato. Qayta urinib ko'ring.</div>`;
+  } catch (e) {
+    // API ishlamasa demo bilan davom etamiz
   }
+
+  // Demo + real sharhlarni birlashtirish
+  // Demo sharhlar avval, real sharhlar keyin (yoki aralash qilish mumkin)
+  const allReviews = [...DEMO_REVIEWS, ...realReviews];
+
+  loader.style.display = 'none';
+  grid.style.display = '';
+
+  if (!allReviews.length) {
+    grid.innerHTML = `<div class="rv-empty"><i class="fa-regular fa-comment"></i>Hali sharhlar yo'q</div>`;
+    return;
+  }
+
+  grid.innerHTML = allReviews.map((fb, i) => renderCard(fb, i)).join('');
 })();
 </script>
 </body>
