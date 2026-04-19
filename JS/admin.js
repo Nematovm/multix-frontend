@@ -50,6 +50,7 @@ function showSection(name, el) {
     if (name === 'premium') loadPremiumUsers();
     if (name === 'categories') loadCategories();
     if (name === 'feedbacks') loadFeedbacks('pending');
+    if (name === 'listening') loadListeningTests();
 }
 
 // ── DASHBOARD ──
@@ -109,6 +110,12 @@ async function loadCategories() {
     const cats = await res.json();
 
     const sel = document.getElementById('testCategory');
+    // Listening modal kategoriya select
+const lSel = document.getElementById('lTestCategory');
+if (lSel) {
+    lSel.innerHTML = '<option value="">Select category</option>' +
+        cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
     sel.innerHTML = '<option value="">Select category</option>' +
         cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 
@@ -646,4 +653,177 @@ function filterPart(val) {
             card.style.display = 'none';
         }
     });
+}
+
+
+
+// ════════════════════════════════════════════
+// ── LISTENING TESTS ──
+// ════════════════════════════════════════════
+
+let selectedListeningAudioFile = null;
+let selectedListeningJsonFile  = null;
+
+async function loadListeningTests() {
+    const token = localStorage.getItem('cp_token');
+    const res = await fetch(`${API_URL}/admin/listening-tests`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const tests = await res.json();
+    const tbody = document.getElementById('listeningBody');
+
+    if (!tests.length) {
+        tbody.innerHTML = '<tr><td colspan="8" class="table-empty">No listening tests yet.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = tests.map(t => {
+        const partsVal   = (t.parts || '').trim();
+        const isFull     = partsVal.includes(',') || partsVal === '1,2,3,4';
+        const formatLabel = isFull ? 'Full Mock' : `Part ${partsVal}`;
+
+        return `
+        <tr>
+          <td style="font-weight:600;color:var(--text)">${t.name}</td>
+          <td>${t.category_name || '—'}</td>
+          <td><span class="badge badge-${t.level}">${t.level}</span></td>
+          <td>${formatLabel}</td>
+          <td><span class="badge badge-${t.type}">${t.type}</span></td>
+          <td>
+            ${t.has_audio
+              ? `<span style="color:#2caa9a;font-size:12px"><i class="fa-solid fa-headphones"></i> Audio</span>`
+              : `<span style="color:var(--text-3);font-size:12px">No audio</span>`}
+          </td>
+          <td>
+            ${t.has_json
+              ? `<span style="color:#2caa9a;font-size:12px"><i class="fa-solid fa-file-code"></i> JSON</span>`
+              : `<span style="color:var(--text-3);font-size:12px">No JSON</span>`}
+          </td>
+          <td>
+            <div class="act-btns">
+              <button class="act-btn danger" onclick="deleteListeningTest(${t.id})">Delete</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+}
+
+function toggleListeningParts(val) {
+    const wrap = document.getElementById('lPartSelectWrap');
+    wrap.classList.toggle('hidden', val !== 'part');
+}
+
+function onListeningAudioSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+    selectedListeningAudioFile = file;
+    const area = document.getElementById('lAudioUploadArea');
+    area.classList.add('selected');
+    document.getElementById('lAudioUploadText').textContent =
+        `✓ ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+}
+
+function onListeningJsonSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (!file.name.endsWith('.json')) {
+        showToast('Faqat .json fayl yuklang!', 'error'); input.value = ''; return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const parsed = JSON.parse(e.target.result);
+            if (!parsed.parts) {
+                showToast('JSON da "parts" array yo\'q!', 'error');
+                input.value = ''; selectedListeningJsonFile = null; return;
+            }
+            selectedListeningJsonFile = file;
+            const area = document.getElementById('lJsonUploadArea');
+            area.classList.add('selected');
+            document.getElementById('lJsonUploadText').textContent =
+                `✓ ${file.name} (${(file.size / 1024).toFixed(1)}KB) — ${parsed.parts.length} part(s)`;
+        } catch {
+            showToast('JSON fayl noto\'g\'ri formatda!', 'error');
+            input.value = ''; selectedListeningJsonFile = null;
+        }
+    };
+    reader.readAsText(file);
+}
+
+async function addListeningTest() {
+    const token = localStorage.getItem('cp_token');
+    const name        = document.getElementById('lTestName').value.trim();
+    const category_id = document.getElementById('lTestCategory').value;
+    const format      = document.getElementById('lTestFormat').value;
+const parts = format === 'full'
+    ? '1,2,3,4,5,6'   // ← 4 dan 6 ga
+    : document.getElementById('lTestPart').value;
+
+    if (!name)                        { showToast('Test nomini kiriting', 'error'); return; }
+    if (!category_id)                 { showToast('Kategoriya tanlang', 'error'); return; }
+    if (!selectedListeningAudioFile)  { showToast('Audio fayl tanlang!', 'error'); return; }
+    if (!selectedListeningJsonFile)   { showToast('JSON fayl tanlang!', 'error'); return; }
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('category_id', category_id);
+    formData.append('level',    document.getElementById('lTestLevel').value);
+    formData.append('type',     document.getElementById('lTestType').value);
+    formData.append('format',   format);
+    formData.append('parts',    parts);
+    formData.append('duration', document.getElementById('lTestDuration').value);
+    formData.append('audio_file', selectedListeningAudioFile);
+    formData.append('json_file',  selectedListeningJsonFile);
+
+    document.getElementById('lUploadProgress').classList.remove('hidden');
+    document.getElementById('lUploadFill').style.width = '30%';
+    document.getElementById('lUploadStatus').textContent = 'Uploading audio & JSON...';
+
+    try {
+        const res = await fetch(`${API_URL}/admin/listening-tests`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+        });
+        document.getElementById('lUploadFill').style.width = '100%';
+
+        if (res.ok) {
+            showToast('Listening test qo\'shildi!');
+            closeModal('addListening');
+            resetListeningForm();
+            loadListeningTests();
+        } else {
+            const d = await res.json();
+            showToast(d.detail || 'Xato', 'error');
+        }
+    } catch (e) {
+        showToast('Network error', 'error');
+    } finally {
+        document.getElementById('lUploadProgress').classList.add('hidden');
+        document.getElementById('lUploadFill').style.width = '0%';
+    }
+}
+
+async function deleteListeningTest(id) {
+    if (!confirm('Bu listening testni o\'chirasizmi?')) return;
+    const token = localStorage.getItem('cp_token');
+    const res = await fetch(`${API_URL}/admin/listening-tests/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (res.ok) { showToast('O\'chirildi'); loadListeningTests(); }
+    else showToast('Xato', 'error');
+}
+
+function resetListeningForm() {
+    document.getElementById('lTestName').value     = '';
+    document.getElementById('lTestDuration').value = 40;
+    document.getElementById('lAudioUploadArea').classList.remove('selected');
+    document.getElementById('lAudioUploadText').textContent = 'Click to upload Audio file';
+    document.getElementById('lAudioFileInput').value = '';
+    document.getElementById('lJsonUploadArea').classList.remove('selected');
+    document.getElementById('lJsonUploadText').textContent  = 'Click to upload JSON file';
+    document.getElementById('lJsonFileInput').value  = '';
+    selectedListeningAudioFile = null;
+    selectedListeningJsonFile  = null;
 }

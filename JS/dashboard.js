@@ -1,5 +1,6 @@
 const API_URL = 'https://api.multx.uz';
 let currentUser = null;
+let currentSection = 'reading';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('cp_token');
@@ -92,19 +93,23 @@ document.addEventListener('click', e => {
 });
 
 // Testlarni backenddan yuklash
-async function loadPublicTests() {
+async function loadPublicTests(section = 'reading') {
+    currentSection = section;
     try {
-        const res = await fetch(`${API_URL}/tests`);
+const endpoint = section === 'listening'
+    ? `${API_URL}/listening-tests`
+    : `${API_URL}/tests`;
+        const res = await fetch(endpoint);
         if (!res.ok) return;
         const data = await res.json();
-        renderTests(data);
-        renderTypeFilter(data);  // ← qo'shing
+        renderTests(data, section);
+        renderTypeFilter(data);
     } catch (e) {
         console.error('Tests load error:', e);
     }
 }
 
-function renderTests(tests) {
+function renderTests(tests, section = 'reading') {
     const content = document.getElementById('testContent');
     if (!tests.length) {
         content.innerHTML = `
@@ -134,32 +139,50 @@ function renderTests(tests) {
             </div>
             <div class="tg-body">
                 ${catTests.map(t => {
-                    const pdfUrl = t.pdf_url || (t.pdf_filename
-                        ? `http://127.0.0.1:8000/static/pdfs/${t.pdf_filename}`
-                        : null);
+                    const testId  = t.id;
+                    const isPremium = t.type === 'premium';
+                    const locked    = isPremium && !currentUser?.is_premium;
+
+                    // Parts label
+                    const partsVal   = (t.parts || '').trim();
+                    const isFull     = partsVal.includes(',');
+                    const partsLabel = isFull ? partsVal : `Part ${partsVal}`;
+
+                    // Audio badge (listening uchun)
+                    const audioBadge = section === 'listening' && t.has_audio
+                        ? `<span class="tc-tag"><i class="fa-solid fa-headphones"></i> Audio</span>`
+                        : '';
+
                     return `
-                    <div class="test-card" data-type="${t.type}" data-level="${t.level}" data-parts="${t.parts || ''}" data-category="${catName}">
+                    <div class="test-card"
+                         data-type="${t.type}"
+                         data-level="${t.level}"
+                         data-parts="${t.parts || ''}"
+                         data-category="${catName}">
                         <div class="tc-left">
                             <div class="tc-info">
                                 <span class="tc-name">${t.name}</span>
                                 <span class="tc-badge ${t.type}">
                                     <i class="fa-solid ${t.type === 'free' ? 'fa-gift' : 'fa-crown'}"></i>
-                                    ${t.type === 'free' ? 'Free' : 'Premium'}
+                                    ${t.type === 'free' ? 'FREE' : 'PREMIUM'}
                                 </span>
                             </div>
-                            <div class="tc-meta">${t.description || 'Parts ' + (t.parts || '1,2,3,4,5')} · ${t.level ? t.level.charAt(0).toUpperCase() + t.level.slice(1) : 'Medium'} Level</div>
+                            <div class="tc-meta">${partsLabel} · ${t.level ? t.level.charAt(0).toUpperCase() + t.level.slice(1) : 'Medium'} Level</div>
                             <div class="tc-tags">
                                 <span class="tc-tag"><i class="fa-solid fa-chart-bar"></i> ${t.level || 'medium'}</span>
                                 <span class="tc-tag"><i class="fa-regular fa-clock"></i> ${t.duration || 60} min</span>
-                                <span class="tc-tag"><i class="fa-regular fa-circle-check"></i> ${t.questions_count || 35} questions</span>
+                                <span class="tc-tag"><i class="fa-regular fa-circle-check"></i> ${t.questions_count || (section === 'listening' ? 40 : 35)} questions</span>
+                                ${audioBadge}
                             </div>
-
                         </div>
-
-${t.type === 'premium' && !currentUser?.is_premium
-    ? `<button class="tc-btn premium-lock" onclick="showGate()"><i class="fa-solid fa-lock"></i> Unlock</button>`
-    : `<button class="tc-btn" onclick="startTest(${t.id}, '${pdfUrl || ''}')">Start test</button>`
-}
+                        ${locked
+                            ? `<button class="tc-btn premium-lock" onclick="showGate()">
+                                   <i class="fa-solid fa-lock"></i> Unlock
+                               </button>`
+                            : `<button class="tc-btn" onclick="startTest(${testId}, '${section}')">
+                                   Start test
+                               </button>`
+                        }
                     </div>`;
                 }).join('')}
             </div>
@@ -167,14 +190,15 @@ ${t.type === 'premium' && !currentUser?.is_premium
     `).join('');
 }
 
-function startTest(testId, pdfUrl) {
+function startTest(testId, section = 'reading') {
     const token = localStorage.getItem('cp_token');
-    if (!token) {
-        showGate();
-        return;
+    if (!token) { showGate(); return; }
+
+    if (section === 'listening') {
+        window.open(`https://app.multx.uz/listening/${testId}?token=${token}`, '_blank');
+    } else {
+        window.open(`https://app.multx.uz/test/${testId}?token=${token}`, '_blank');
     }
-    // Tokenni URL ga qo'shib yuboramiz
-    window.open(`https://app.multx.uz/test/${testId}?token=${token}`, '_blank');
 }
 
 function filterPart(val) {

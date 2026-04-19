@@ -27,6 +27,9 @@
       <a href="#" class="sb-item" onclick="showSection('tests', this)">
         <span class="sb-icon"><i class="fa-solid fa-book-open"></i></span> Tests
       </a>
+      <a href="#" class="sb-item" onclick="showSection('listening', this)">
+        <span class="sb-icon"><i class="fa-solid fa-headphones"></i></span> Listening Tests
+      </a>
       <a href="#" class="sb-item" onclick="showSection('categories', this)">
         <span class="sb-icon"><i class="fa-solid fa-folder"></i></span> Categories
       </a>
@@ -238,6 +241,42 @@
         </div>
       </div>
     </section>
+    <!-- ── LISTENING TESTS ── -->
+<section id="sec-listening" class="hidden">
+  <header class="db-header">
+    <div class="dbh-left"><h1 class="dbh-title">Listening Tests</h1></div>
+    <div class="dbh-right">
+      <button class="admin-btn primary" onclick="openModal('addListening')">
+        <i class="fa-solid fa-plus"></i> Add Listening Test
+      </button>
+    </div>
+  </header>
+  <div class="admin-content">
+    <div class="admin-table-card">
+      <div class="atc-header">
+        <input type="text" class="admin-search" placeholder="Search listening tests..."
+               oninput="searchTable('listeningTable', this.value)">
+      </div>
+      <table class="admin-table" id="listeningTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Level</th>
+            <th>Format</th>
+            <th>Type</th>
+            <th>Audio</th>
+            <th>JSON</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="listeningBody">
+          <tr><td colspan="8" class="table-empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
     <!-- ── FEEDBACKS ── -->
     <section id="sec-feedbacks" class="hidden">
       <header class="db-header">
@@ -272,6 +311,106 @@
     </section>
 
   </main>
+</div>
+
+<!-- ── ADD LISTENING TEST MODAL ── -->
+<div class="modal-overlay hidden" id="modal-addListening">
+  <div class="admin-modal" style="max-width:600px">
+    <div class="modal-head">
+      <h3>Add Listening Test</h3>
+      <button onclick="closeModal('addListening')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label>Test Name *</label>
+        <input type="text" id="lTestName" placeholder="e.g. IELTS Listening Mock 1">
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Category *</label>
+          <select id="lTestCategory">
+            <option value="">Select category</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Access Type</label>
+          <select id="lTestType">
+            <option value="free">Free</option>
+            <option value="premium">Premium</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Level</label>
+          <select id="lTestLevel">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Format</label>
+          <select id="lTestFormat" onchange="toggleListeningParts(this.value)">
+            <option value="full">Full Mock (4 parts)</option>
+            <option value="part">Single Part</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field hidden" id="lPartSelectWrap">
+        <label>Part Number</label>
+        <select id="lTestPart">
+          <option value="1">Part 1</option>
+          <option value="2">Part 2</option>
+          <option value="3">Part 3</option>
+          <option value="4">Part 4</option>
+          <option value="5">Part 5</option>
+<option value="6">Part 6</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>Duration (min)</label>
+        <input type="number" id="lTestDuration" value="40">
+      </div>
+
+      <div class="form-field">
+        <label>Audio File * (mp3, wav, ogg, m4a)</label>
+        <div class="pdf-upload-area" id="lAudioUploadArea"
+             onclick="document.getElementById('lAudioFileInput').click()">
+          <i class="fa-solid fa-headphones" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
+          <div id="lAudioUploadText">Click to upload Audio file</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">mp3, wav, ogg, m4a, aac</div>
+        </div>
+        <input type="file" id="lAudioFileInput" accept=".mp3,.wav,.ogg,.m4a,.aac"
+               style="display:none" onchange="onListeningAudioSelect(this)">
+      </div>
+
+      <div class="form-field">
+        <label>JSON File * </label>
+        <div class="pdf-upload-area" id="lJsonUploadArea"
+             onclick="document.getElementById('lJsonFileInput').click()">
+          <i class="fa-solid fa-file-code" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
+          <div id="lJsonUploadText">Click to upload JSON file</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">Only .json format</div>
+        </div>
+        <input type="file" id="lJsonFileInput" accept=".json"
+               style="display:none" onchange="onListeningJsonSelect(this)">
+      </div>
+
+      <div class="upload-progress hidden" id="lUploadProgress">
+        <div class="up-bar"><div class="up-fill" id="lUploadFill"></div></div>
+        <span id="lUploadStatus">Uploading...</span>
+      </div>
+
+      <button class="admin-btn primary full" onclick="addListeningTest()">
+        <i class="fa-solid fa-check"></i> Save Listening Test
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- ── ADD TEST MODAL ── -->
