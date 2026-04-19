@@ -77,7 +77,7 @@
     <li><a href="#team">Jamoa</a></li>
     <li><a href="#plans">Narxlar</a></li>
   </ul>
-  <a href="./Pages/auth.html" class="nav-cta">Bepul Boshlash →</a>
+  <a href="./Pages/auth.html" onclick="event.preventDefault(); goToAuth();" class="nav-cta">Bepul Boshlash →</a>
 </nav>
 
 <!-- HERO -->
@@ -89,7 +89,7 @@
     <h1>Ingliz tilini<br><span class="line-teal">professional darajada</span><br>egallang</h1>
     <p>Shaxsiylashtirilgan o'quv rejalar, real imtihon simulyatorlari va AI-mentor bilan CEFR sertifikatiga erishish yanada oson.</p>
     <div class="hero-actions">
-      <a href="./Pages/auth.html" class="btn-primary">
+      <a href="./Pages/auth.html" onclick="event.preventDefault(); goToAuth();" class="btn-primary">
         Bepul Sinab Ko'rish
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -166,7 +166,7 @@
             <div style="display:flex;align-items:center;gap:12px;font-size:13.5px;color:#3a5566"><div style="width:26px;height:26px;background:#eef9f7;border:1px solid #c8ede9;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1d8a7c;font-size:11px;flex-shrink:0">✓</div>Darhol natija va tavsiyalar</div>
             <div style="display:flex;align-items:center;gap:12px;font-size:13.5px;color:#3a5566"><div style="width:26px;height:26px;background:#eef9f7;border:1px solid #c8ede9;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1d8a7c;font-size:11px;flex-shrink:0">✓</div>To'liq bepul</div>
           </div>
-          <a href="./Pages/auth.html"><button class="btn-primary" style="width:100%;justify-content:center;border:none;cursor:pointer">Testni Boshlash →</button></a>
+          <a href="./Pages/auth.html" onclick="event.preventDefault(); goToAuth();"><button class="btn-primary" style="width:100%;justify-content:center;border:none;cursor:pointer">Testni Boshlash →</button></a>
         </div>
       </div>
     </div>
@@ -258,10 +258,11 @@
         </div>
         <div class="plan-solo-period">/ oyiga</div>
         <div class="plan-solo-divider"></div>
-        <a href="./Pages/auth.html" class="plan-solo-btn">
-          Hozir Boshlash
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+<!-- YANGI -->
+<a href="#" onclick="event.preventDefault(); openPayment();" class="plan-solo-btn">
+  Hozir Boshlash
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</a>
         <p class="plan-solo-note">Kredit karta shart emas</p>
         <div class="psc-orb psc-orb-1"></div>
         <div class="psc-orb psc-orb-2"></div>
@@ -282,7 +283,7 @@
     <h2>Ingliz tilingizdagi<br>o'zgarish <span style="color:#3dc9b7">bugun</span><br>boshlanadi</h2>
     <p>0+ o'quvchi allaqachon o'zining CEFR maqsadiga erishmoqda. Navbat sizda.</p>
     <div class="cta-btns">
-      <a href="./Pages/auth.html" class="btn-primary" style="font-size:16px;padding:18px 44px">
+      <a href="./Pages/auth.html" onclick="event.preventDefault(); goToAuth();" class="btn-primary" style="font-size:16px;padding:18px 44px">
         Hoziroq Boshlash — Bepul
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -313,7 +314,157 @@
   </div>
 </footer>
 
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(13,31,45,0.7); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+  <div style="background:#fff; border-radius:24px; padding:44px 40px; max-width:480px; width:90%; position:relative; box-shadow:0 32px 80px rgba(0,0,0,0.2); animation: fadeUp 0.35s ease both;">
+    <button onclick="closePayment()" style="position:absolute; top:18px; right:20px; background:none; border:none; font-size:20px; color:#7a9aaa; cursor:pointer;">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div style="text-align:center; margin-bottom:28px;">
+      <div style="width:56px; height:56px; background:linear-gradient(135deg,#2caa9a,#1d8a7c); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:24px; color:#fff;">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      <h2 style="font-family:'Roboto Slab',serif; font-size:22px; font-weight:800; color:#0f2230; margin-bottom:8px;">Premium A'zolik</h2>
+      <div style="font-size:28px; font-weight:800; font-family:'Kanit',sans-serif; color:#2caa9a;">UZS 40 000 <span style="font-size:15px; color:#7a9aaa; font-weight:500;">/ oyiga</span></div>
+    </div>
+
+    <!-- YANGI -->
+<div style="background:#f4faf9; border:1px solid #d8ecea; border-radius:16px; padding:20px 22px; margin-bottom:24px;">
+  <div style="font-size:12px; font-weight:700; color:#1d8a7c; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:14px;">To'lov rekvizitlari</div>
+
+  <!-- Karta raqami -->
+  <div style="background:#fff; border:1.5px solid #d8ecea; border-radius:12px; padding:14px 16px; margin-bottom:10px;">
+    <div style="font-size:11px; color:#7a9aaa; font-weight:600; margin-bottom:6px; text-transform:uppercase; letter-spacing:1px;">Karta raqami</div>
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <span id="cardNumber" style="font-family:'Kanit',sans-serif; font-size:18px; font-weight:700; color:#0f2230; letter-spacing:2px;">9860 1201 3511 5240</span>
+      <button onclick="copyCard('cardNumber', this)" style="background:#eef9f7; border:1px solid #c8ede9; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:600; color:#1d8a7c; cursor:pointer; display:flex; align-items:center; gap:5px; white-space:nowrap; transition:all 0.2s;">
+        <i class="fa-regular fa-copy"></i> Nusxalash
+      </button>
+    </div>
+  </div>
+
+  <!-- Karta egasi -->
+  <div style="background:#fff; border:1.5px solid #d8ecea; border-radius:12px; padding:14px 16px; margin-bottom:16px;">
+    <div style="font-size:11px; color:#7a9aaa; font-weight:600; margin-bottom:6px; text-transform:uppercase; letter-spacing:1px;">Karta egasi</div>
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <span id="cardOwner" style="font-size:15px; font-weight:700; color:#0f2230;">GULLOLA NARZULLAEVA</span>
+      <button onclick="copyCard('cardOwner', this)" style="background:#eef9f7; border:1px solid #c8ede9; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:600; color:#1d8a7c; cursor:pointer; display:flex; align-items:center; gap:5px; white-space:nowrap; transition:all 0.2s;">
+        <i class="fa-regular fa-copy"></i> Nusxalash
+      </button>
+    </div>
+  </div>
+
+  <!-- Qadamlar -->
+  <div style="display:flex; flex-direction:column; gap:8px;">
+    <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#3a5566;">
+      <div style="width:22px; height:22px; background:#2caa9a; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; font-weight:700; flex-shrink:0;">1</div>
+      Yuqoridagi kartaga 40 000 UZS o'tkazing
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#3a5566;">
+      <div style="width:22px; height:22px; background:#2caa9a; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; font-weight:700; flex-shrink:0;">2</div>
+      Chek rasmini Telegram ga yuboring
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#3a5566;">
+      <div style="width:22px; height:22px; background:#2caa9a; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; font-weight:700; flex-shrink:0;">3</div>
+      Bir necha daqiqada Premium faollashtiriladi
+    </div>
+  </div>
+</div>
+
+    <a id="paymentTelegramBtn" href="#" target="_blank"
+      style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:15px; border-radius:14px; background:linear-gradient(135deg,#2196f3,#1565c0); color:#fff; font-family:'Saira',sans-serif; font-size:15px; font-weight:700; text-decoration:none; transition:all 0.3s; box-shadow:0 8px 24px rgba(33,150,243,0.3);">
+      <i class="fa-brands fa-telegram" style="font-size:20px;"></i>
+      Telegram orqali to'lash
+    </a>
+    <p style="text-align:center; margin-top:12px; font-size:12px; color:#7a9aaa;">
+      <i class="fa-solid fa-shield-halved" style="color:#2caa9a;"></i>
+      Xavfsiz va tez — 5 daqiqada faol
+    </p>
+  </div>
+</div>
+
 <script>
+/* ══ AUTH LINKS ══ */
+function goToAuth() {
+    const token = localStorage.getItem('cp_token');
+    if (token) {
+        window.location.href = './Pages/dashboard.html';
+    } else {
+        window.location.href = './Pages/auth.html';
+    }
+}
+
+/* ══ PAYMENT MODAL ══ */
+const TELEGRAM_BOT = 'https://t.me/muhammadali_100'; // ← Telegram linkingizni shu yerga yozing
+
+// YANGI
+function openPayment() {
+    const modal = document.getElementById('paymentModal');
+    const tgBtn = document.getElementById('paymentTelegramBtn');
+
+    const user = sessionStorage.getItem('cp_user');
+    let tgLink = TELEGRAM_BOT;
+    if (user) {
+        try {
+            const u = JSON.parse(user);
+            tgLink = `${TELEGRAM_BOT}?start=premium_${u.id || ''}`;
+        } catch(e) {}
+    }
+    tgBtn.href = tgLink;
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+function closePayment() {
+    document.getElementById('paymentModal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function copyCard(elId, btn) {
+    const text = document.getElementById(elId).textContent.replace(/\s+/g, ' ').trim();
+    navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Nusxalandi!';
+        btn.style.background = '#2caa9a';
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#2caa9a';
+        setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.style.background = '';
+            btn.style.color = '';
+            btn.style.borderColor = '';
+        }, 2000);
+    });
+}
+
+// Modal tashqarisiga bosilsa yopilsin
+document.getElementById('paymentModal').addEventListener('click', function(e) {
+    if (e.target === this) closePayment();
+});
+
+/* ══ AUTH REDIRECT ══ */
+(function checkAuth() {
+    const token = localStorage.getItem('cp_token');
+    if (!token) return;
+    
+    fetch('https://api.multx.uz/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => {
+        if (res.ok) window.location.replace('./Pages/dashboard.html');
+        else localStorage.removeItem('cp_token');
+    })
+    .catch(() => {});
+})();
+
+// Auth dan qaytib kelganda payment modal ochish
+if (sessionStorage.getItem('cp_open_payment') === 'true') {
+    sessionStorage.removeItem('cp_open_payment');
+    // Sahifa to'liq yuklanganidan keyin ochish
+    window.addEventListener('load', () => setTimeout(openPayment, 600));
+}
+
 /* ══ CURSOR ══ */
 const cursor = document.getElementById('cursor');
 const ring   = document.getElementById('cursorRing');

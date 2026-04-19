@@ -1,8 +1,26 @@
 const API_URL = 'https://api.multx.uz';
+let currentUser = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('cp_token');
 
+    // Har 60 sekundda premium statusni tekshirish
+setInterval(async () => {
+    const token = localStorage.getItem('cp_token');
+    if (!token) return;
+    try {
+        const res = await fetch(`${API_URL}/auth/me`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const freshUser = await res.json();
+        // Agar premium o'zgargan bo'lsa — sahifani yangilash
+        if (currentUser && currentUser.is_premium !== freshUser.is_premium) {
+            currentUser = freshUser;
+            window.location.reload();
+        }
+    } catch(e) {}
+}, 60000);  
     if (!token) {
         sessionStorage.setItem('cp_logged_in', 'false');
         updateSidebarGuest();
@@ -23,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const user = await res.json();
         updateSidebarUser(user);
+        currentUser = user;
         sessionStorage.setItem('cp_logged_in', 'true');
         sessionStorage.setItem('cp_user', JSON.stringify(user));
 
@@ -136,10 +155,11 @@ function renderTests(tests) {
                             </div>
 
                         </div>
-                        ${t.type === 'premium'
-                            ? `<button class="tc-btn premium-lock" onclick="showGate()"><i class="fa-solid fa-lock"></i> Unlock</button>`
-                            : `<button class="tc-btn" onclick="startTest(${t.id}, '${pdfUrl || ''}')">Start test</button>`
-                        }
+
+${t.type === 'premium' && !currentUser?.is_premium
+    ? `<button class="tc-btn premium-lock" onclick="showGate()"><i class="fa-solid fa-lock"></i> Unlock</button>`
+    : `<button class="tc-btn" onclick="startTest(${t.id}, '${pdfUrl || ''}')">Start test</button>`
+}
                     </div>`;
                 }).join('')}
             </div>

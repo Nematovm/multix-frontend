@@ -151,7 +151,17 @@ async function goToRegister() {
             localStorage.setItem('cp_token', data.access_token);
             sessionStorage.setItem('cp_logged_in', 'true');
             showToast("Xush kelibsiz! Yo'naltirilmoqda...", 'success');
-            setTimeout(() => window.location.href = 'dashboard.html', 900);
+            setTimeout(() => {
+    const after = sessionStorage.getItem('cp_after_login');
+    if (after === 'payment') {
+        sessionStorage.removeItem('cp_after_login');
+        window.location.href = '../index.html#plans';
+        // Sahifa yuklanganda modal avtomatik ochiladi
+        sessionStorage.setItem('cp_open_payment', 'true');
+    } else {
+        window.location.href = 'dashboard.html';
+    }
+}, 900);
         }
     } catch (err) {
         if (err.message === 'Failed to fetch') {
@@ -208,7 +218,17 @@ async function completeRegistration() {
         localStorage.setItem('cp_token', data.access_token);
         sessionStorage.setItem('cp_logged_in', 'true');
         showToast('Hisob muvaffaqiyatli yaratildi! 🎉', 'success');
-        setTimeout(() => window.location.href = 'dashboard.html', 900);
+        setTimeout(() => {
+    const after = sessionStorage.getItem('cp_after_login');
+    if (after === 'payment') {
+        sessionStorage.removeItem('cp_after_login');
+        window.location.href = '../index.html#plans';
+        // Sahifa yuklanganda modal avtomatik ochiladi
+        sessionStorage.setItem('cp_open_payment', 'true');
+    } else {
+        window.location.href = 'dashboard.html';
+    }
+}, 900);
     } catch (err) {
         if (err.message === 'Failed to fetch') {
             showToast("Server bilan bog'lanib bo'lmadi.");

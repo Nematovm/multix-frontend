@@ -168,8 +168,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'User';
 
         // Sidebar
-        document.querySelector('.sb-user-name').textContent = fullName;
-        document.querySelector('.sb-user-avatar').textContent = fullName.charAt(0).toUpperCase();
+        // YANGI
+document.querySelector('.sb-user-name').textContent = fullName;
+document.querySelector('.sb-user-avatar').textContent = fullName.charAt(0).toUpperCase();
+document.querySelector('.sb-user-role').textContent = user.is_premium ? 'Pro Plan' : 'Free Plan';
+
+// Profile card dagi plan badge
+const planBadge = document.getElementById('pcPlanBadge');
+if (planBadge) {
+  planBadge.textContent = user.is_premium ? 'Pro Plan' : 'Free Plan';
+  planBadge.style.background = user.is_premium
+    ? 'linear-gradient(135deg,#2caa9a,#1d8a7c)'
+    : '#f4faf9';
+  planBadge.style.color = user.is_premium ? '#fff' : '#1d8a7c';
+  planBadge.style.border = user.is_premium
+    ? 'none'
+    : '1px solid #c8ede9';
+}
 
         // Profile card
         document.getElementById('pcFullName').textContent = fullName;
