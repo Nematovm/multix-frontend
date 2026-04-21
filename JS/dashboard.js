@@ -193,10 +193,6 @@ function renderTests(tests, section = 'reading') {
 function startTest(testId, section = 'reading') {
     const token = localStorage.getItem('cp_token');
     if (!token) { showGate(); return; }
-    // startTest funksiyasida:
-if (section === 'listening') {
-    window.open(`https://app.multx.uz/test/${testId}?token=${token}&section=listening`, '_blank');
-}
 
     if (section === 'listening') {
         window.open(`https://app.multx.uz/listening/${testId}?token=${token}`, '_blank');
