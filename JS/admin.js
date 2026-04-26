@@ -663,7 +663,7 @@ function filterPart(val) {
 
 let selectedListeningAudioFile = null;
 let selectedListeningJsonFile  = null;
-let selectedListeningMapFile = null;
+let selectedListeningMapFile   = null;
 
 async function loadListeningTests() {
     const token = localStorage.getItem('cp_token');
@@ -679,10 +679,9 @@ async function loadListeningTests() {
     }
 
     tbody.innerHTML = tests.map(t => {
-        const partsVal   = (t.parts || '').trim();
-        const isFull     = partsVal.includes(',') || partsVal === '1,2,3,4';
+        const partsVal    = (t.parts || '').trim();
+        const isFull      = partsVal.includes(',') || partsVal === '1,2,3,4';
         const formatLabel = isFull ? 'Full Mock' : `Part ${partsVal}`;
-
         return `
         <tr>
           <td style="font-weight:600;color:var(--text)">${t.name}</td>
@@ -724,7 +723,6 @@ function onListeningAudioSelect(input) {
         `✓ ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
 }
 
-// ── onListeningJsonSelect — faqat JSON tanlash, map ga tegmaydi ──
 function onListeningJsonSelect(input) {
     const file = input.files[0];
     if (!file) return;
@@ -749,11 +747,10 @@ function onListeningJsonSelect(input) {
             document.getElementById('lJsonUploadText').textContent =
                 `✓ ${file.name} (${(file.size / 1024).toFixed(1)}KB) — ${parsed.parts.length} part(s)`;
 
-            // ── JSON da map_image_url bor bo'lsa — map upload ni ko'rsat ──
+            // Map field — har doim ko'rsatish
+            const mapField = document.getElementById('lMapFieldWrap');
             if (mapField) mapField.classList.remove('hidden');
-            if (mapField) {
-                mapField.classList.toggle('hidden', !hasMap);
-            }
+
         } catch {
             showToast('JSON fayl noto\'g\'ri formatda!', 'error');
             input.value = '';
@@ -763,8 +760,6 @@ function onListeningJsonSelect(input) {
     reader.readAsText(file);
 }
 
-
-// ── onListeningMapSelect — faqat map rasm tanlash ──
 function onListeningMapSelect(input) {
     const file = input.files[0];
     if (!file) return;
@@ -798,97 +793,30 @@ function onListeningMapSelect(input) {
     reader.readAsDataURL(file);
 }
 
-
-// ── resetListeningForm — hammani tozalaydi ──
-function resetListeningForm() {
-    document.getElementById('lTestName').value     = '';
-    document.getElementById('lTestDuration').value = 40;
-
-    // Audio reset
-    document.getElementById('lAudioUploadArea').classList.remove('selected');
-    document.getElementById('lAudioUploadText').textContent = 'Click to upload Audio file';
-    document.getElementById('lAudioFileInput').value = '';
-    selectedListeningAudioFile = null;
-
-    // JSON reset
-    document.getElementById('lJsonUploadArea').classList.remove('selected');
-    document.getElementById('lJsonUploadText').textContent  = 'Click to upload JSON file';
-    document.getElementById('lJsonFileInput').value  = '';
-    selectedListeningJsonFile  = null;
-
-    // Map reset
-    const mapArea = document.getElementById('lMapUploadArea');
-    if (mapArea) {
-        mapArea.classList.remove('selected');
-        mapArea.style.backgroundImage = '';
-        mapArea.style.minHeight       = '';
-        const icon = mapArea.querySelector('i');
-        const text = mapArea.querySelector('div');
-        if (icon) icon.style.display = '';
-        if (text) text.style.opacity = '';
-    }
-    document.getElementById('lMapUploadText').textContent = 'Click to upload Map image';
-    document.getElementById('lMapFileInput').value        = '';
-    selectedListeningMapFile = null;
-
-}
-
-function onListeningMapSelect(input) {
-    const file = input.files[0];
-    if (!file) return;
- 
-    const allowed = ['.png', '.jpg', '.jpeg', '.webp'];
-    const ext = '.' + file.name.split('.').pop().toLowerCase();
-    if (!allowed.includes(ext)) {
-        showToast('Faqat rasm fayl yuklang! (png, jpg, jpeg, webp)', 'error');
-        input.value = '';
-        return;
-    }
- 
-    selectedListeningMapFile = file;
-    const area = document.getElementById('lMapUploadArea');
-    area.classList.add('selected');
-    document.getElementById('lMapUploadText').textContent =
-        `✓ ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
- 
-    // Preview ko'rsatish — upload area da rasm ko'rinadi
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        area.style.backgroundImage    = `url(${e.target.result})`;
-        area.style.backgroundSize     = 'cover';
-        area.style.backgroundPosition = 'center';
-        area.style.minHeight          = '140px';
-        // Icon va textni yashirish
-        area.querySelector('i').style.display   = 'none';
-        area.querySelector('div').style.opacity = '0';
-    };
-    reader.readAsDataURL(file);
-}
-
 async function addListeningTest() {
-    const token = localStorage.getItem('cp_token');
+    const token       = localStorage.getItem('cp_token');
     const name        = document.getElementById('lTestName').value.trim();
     const category_id = document.getElementById('lTestCategory').value;
     const format      = document.getElementById('lTestFormat').value;
-const parts = format === 'full'
-    ? '1,2,3,4,5,6'   // ← 4 dan 6 ga
-    : document.getElementById('lTestPart').value;
+    const parts       = format === 'full'
+        ? '1,2,3,4,5,6'
+        : document.getElementById('lTestPart').value;
 
-    if (!name)                        { showToast('Test nomini kiriting', 'error'); return; }
-    if (!category_id)                 { showToast('Kategoriya tanlang', 'error'); return; }
-    if (!selectedListeningAudioFile)  { showToast('Audio fayl tanlang!', 'error'); return; }
-    if (!selectedListeningJsonFile)   { showToast('JSON fayl tanlang!', 'error'); return; }
+    if (!name)                       { showToast('Test nomini kiriting', 'error'); return; }
+    if (!category_id)                { showToast('Kategoriya tanlang', 'error'); return; }
+    if (!selectedListeningAudioFile) { showToast('Audio fayl tanlang!', 'error'); return; }
+    if (!selectedListeningJsonFile)  { showToast('JSON fayl tanlang!', 'error'); return; }
 
     const formData = new FormData();
-    formData.append('name', name);
+    formData.append('name',        name);
     formData.append('category_id', category_id);
-    formData.append('level',    document.getElementById('lTestLevel').value);
-    formData.append('type',     document.getElementById('lTestType').value);
-    formData.append('format',   format);
-    formData.append('parts',    parts);
-    formData.append('duration', document.getElementById('lTestDuration').value);
-    formData.append('audio_file', selectedListeningAudioFile);
-    formData.append('json_file',  selectedListeningJsonFile);
+    formData.append('level',       document.getElementById('lTestLevel').value);
+    formData.append('type',        document.getElementById('lTestType').value);
+    formData.append('format',      format);
+    formData.append('parts',       parts);
+    formData.append('duration',    document.getElementById('lTestDuration').value);
+    formData.append('audio_file',  selectedListeningAudioFile);
+    formData.append('json_file',   selectedListeningJsonFile);
     if (selectedListeningMapFile) {
         formData.append('map_image', selectedListeningMapFile);
     }
@@ -936,12 +864,33 @@ async function deleteListeningTest(id) {
 function resetListeningForm() {
     document.getElementById('lTestName').value     = '';
     document.getElementById('lTestDuration').value = 40;
+
+    // Audio
     document.getElementById('lAudioUploadArea').classList.remove('selected');
     document.getElementById('lAudioUploadText').textContent = 'Click to upload Audio file';
     document.getElementById('lAudioFileInput').value = '';
-    document.getElementById('lJsonUploadArea').classList.remove('selected');
-    document.getElementById('lJsonUploadText').textContent  = 'Click to upload JSON file';
-    document.getElementById('lJsonFileInput').value  = '';
     selectedListeningAudioFile = null;
-    selectedListeningJsonFile  = null;
+
+    // JSON
+    document.getElementById('lJsonUploadArea').classList.remove('selected');
+    document.getElementById('lJsonUploadText').textContent = 'Click to upload JSON file';
+    document.getElementById('lJsonFileInput').value = '';
+    selectedListeningJsonFile = null;
+
+    // Map
+    const mapArea = document.getElementById('lMapUploadArea');
+    if (mapArea) {
+        mapArea.classList.remove('selected');
+        mapArea.style.backgroundImage = '';
+        mapArea.style.minHeight       = '';
+        const icon = mapArea.querySelector('i');
+        const text = mapArea.querySelector('div');
+        if (icon) icon.style.display = '';
+        if (text) text.style.opacity = '';
+    }
+    const mapField = document.getElementById('lMapFieldWrap');
+    if (mapField) mapField.classList.add('hidden');
+    document.getElementById('lMapUploadText').textContent = 'Click to upload Map image';
+    document.getElementById('lMapFileInput').value = '';
+    selectedListeningMapFile = null;
 }
