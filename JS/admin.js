@@ -775,8 +775,6 @@ function onListeningMapSelect(input) {
     selectedListeningMapFile = file;
     const area = document.getElementById('lMapUploadArea');
     area.classList.add('selected');
-    document.getElementById('lMapUploadText').textContent =
-        `✓ ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
 
     // Preview
     const reader = new FileReader();
@@ -785,10 +783,17 @@ function onListeningMapSelect(input) {
         area.style.backgroundSize     = 'cover';
         area.style.backgroundPosition = 'center';
         area.style.minHeight          = '140px';
+        area.style.color              = '#fff';
+        // Icon yashirish, matn ko'rsatish
         const icon = area.querySelector('i');
-        const text = area.querySelector('div');
         if (icon) icon.style.display = 'none';
-        if (text) text.style.opacity = '0';
+        // Matnni to'g'ridan o'rnatish
+        document.getElementById('lMapUploadText').textContent =
+            `✓ ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        document.getElementById('lMapUploadText').style.opacity = '1';
+        document.getElementById('lMapUploadText').style.color   = '#fff';
+        document.getElementById('lMapUploadText').style.fontWeight = '600';
+        document.getElementById('lMapUploadText').style.textShadow = '0 1px 4px rgba(0,0,0,0.5)';
     };
     reader.readAsDataURL(file);
 }
