@@ -831,9 +831,6 @@ function resetListeningForm() {
     document.getElementById('lMapFileInput').value        = '';
     selectedListeningMapFile = null;
 
-    // Map field yashirish
-    const mapField = document.getElementById('lMapFieldWrap');
-    if (mapField) mapField.classList.add('hidden');
 }
 
 function onListeningMapSelect(input) {
