@@ -750,8 +750,7 @@ function onListeningJsonSelect(input) {
                 `✓ ${file.name} (${(file.size / 1024).toFixed(1)}KB) — ${parsed.parts.length} part(s)`;
 
             // ── JSON da map_image_url bor bo'lsa — map upload ni ko'rsat ──
-            const hasMap = parsed.parts.some(p => p.type === 'listening-map');
-            const mapField = document.getElementById('lMapFieldWrap');
+            if (mapField) mapField.classList.remove('hidden');
             if (mapField) {
                 mapField.classList.toggle('hidden', !hasMap);
             }
