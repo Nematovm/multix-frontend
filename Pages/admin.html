@@ -389,6 +389,24 @@
                style="display:none" onchange="onListeningAudioSelect(this)">
       </div>
 
+      <div class="form-field hidden" id="lMapFieldWrap">
+        <label>
+          Map Image
+          <span style="color:var(--text-3);font-weight:400;font-size:12px">
+            (Map labelling part uchun)
+          </span>
+        </label>
+        <div class="pdf-upload-area" id="lMapUploadArea"
+             onclick="document.getElementById('lMapFileInput').click()"
+             style="position:relative;overflow:hidden;">
+          <i class="fa-solid fa-map" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
+          <div id="lMapUploadText">Click to upload Map image</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">png, jpg, jpeg, webp</div>
+        </div>
+        <input type="file" id="lMapFileInput" accept=".png,.jpg,.jpeg,.webp"
+               style="display:none" onchange="onListeningMapSelect(this)">
+      </div>
+
       <div class="form-field">
         <label>JSON File * </label>
         <div class="pdf-upload-area" id="lJsonUploadArea"
