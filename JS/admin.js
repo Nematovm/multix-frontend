@@ -888,8 +888,6 @@ function resetListeningForm() {
         if (icon) icon.style.display = '';
         if (text) text.style.opacity = '';
     }
-    const mapField = document.getElementById('lMapFieldWrap');
-    if (mapField) mapField.classList.add('hidden');
     document.getElementById('lMapUploadText').textContent = 'Click to upload Map image';
     document.getElementById('lMapFileInput').value = '';
     selectedListeningMapFile = null;
