@@ -245,8 +245,8 @@
   to { opacity: 1; transform: translateX(0); }
 }
 
-/* section.hidden { display: none; }
-.hidden { display: none !important; } */
+section.hidden { display: none; }
+.hidden { display: none !important; }
 
 .form-field textarea {
   padding: 9px 13px;
