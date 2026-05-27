@@ -479,23 +479,31 @@ body {
   flex-shrink: 0;
 }
 
-.tg-body { transition: all 0.3s; }
+.tg-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0;
+  transition: all 0.3s;
+}
 .tg-body.collapsed { display: none; }
+
 
 /* ── TEST CARD ───────────────────────────────────── */
 .test-card {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  padding: 18px 22px;
+  padding: 18px 20px;
+  border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   transition: background 0.15s;
-  gap: 16px;
+  gap: 14px;
 }
 .test-card:last-child { border-bottom: none; }
 .test-card:hover { background: var(--teal-faint); }
+.test-card:nth-child(3n) { border-right: none; }
 
-.tc-left { flex: 1; min-width: 0; }
+.tc-left { flex: 1; }
 
 .tc-info {
   display: flex;
