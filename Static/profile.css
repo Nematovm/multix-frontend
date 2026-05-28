@@ -61,9 +61,11 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Soon section */
+/* KEYIN */
 .profile-section--soon {
   position: relative;
+  max-height: 320px;
+  overflow: hidden;
 }
 
 /* Blurred content behind overlay */
