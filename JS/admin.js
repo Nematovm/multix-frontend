@@ -825,6 +825,7 @@ if (lQCount) formData.append('questions_count', lQCount.value);
     formData.append('format',      format);
     formData.append('parts',       parts);
     formData.append('duration',    document.getElementById('lTestDuration').value);
+    formData.append('questions_count', document.getElementById('lTestQuestions').value);
     formData.append('audio_file',  selectedListeningAudioFile);
     formData.append('json_file',   selectedListeningJsonFile);
     if (selectedListeningMapFile) {
