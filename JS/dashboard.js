@@ -111,6 +111,7 @@ const endpoint = section === 'listening'
 
 function renderTests(tests, section = 'reading') {
     const content = document.getElementById('testContent');
+    updatePartFilter(tests);
     if (!tests.length) {
         content.innerHTML = `
             <div class="tests-empty">
@@ -188,6 +189,25 @@ function renderTests(tests, section = 'reading') {
             </div>
         </div>
     `).join('');
+}
+
+function updatePartFilter(tests) {
+    const parts = new Set();
+    tests.forEach(t => {
+        if (t.parts) {
+            t.parts.toString().split(',').forEach(p => {
+                const num = p.trim();
+                if (num) parts.add(num);
+            });
+        }
+    });
+
+    const select = document.getElementById('partSelect');
+    if (!select) return;
+
+    const sorted = [...parts].map(Number).sort((a, b) => a - b);
+    select.innerHTML = `<option value="">All Parts</option>` +
+        sorted.map(p => `<option value="${p}">Part ${p}</option>`).join('');
 }
 
 function startTest(testId, section = 'reading') {

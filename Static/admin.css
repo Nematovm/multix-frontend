@@ -263,3 +263,94 @@ section.hidden { display: none; }
   box-sizing: border-box;
 }
 .form-field textarea:focus { border-color: var(--teal); }
+
+
+
+/* ── PDF / AUDIO / MAP UPLOAD AREA ── */
+.pdf-upload-area {
+  border: 2px dashed var(--border-2);
+  border-radius: 12px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg);
+  text-align: center;
+  min-height: 100px;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+.pdf-upload-area:hover {
+  border-color: var(--teal);
+  background: var(--teal-faint);
+}
+.pdf-upload-area.selected {
+  border-color: var(--teal);
+  background: var(--teal-faint);
+  color: var(--teal-dark);
+}
+
+/* ── UPLOAD PROGRESS ── */
+.upload-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.up-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.up-fill {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+.upload-progress span {
+  font-size: 12px;
+  color: var(--text-3);
+  text-align: center;
+}
+
+/* ── BADGE LEVEL ── */
+.badge-easy   { background: #e8f5e9; color: #2e7d32; }
+.badge-medium { background: #fff8e1; color: #f57f17; }
+.badge-hard   { background: #fce4ec; color: #c62828; }
+
+/* ── MODAL SCROLL FIX ── */
+.admin-modal {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* ── FORM GROUP (listening modal questions count fix) ── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+.form-group input {
+  padding: 9px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  font-family: "Saira", sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--white);
+}
+.form-group input:focus { border-color: var(--teal); }

@@ -809,6 +809,9 @@ async function addListeningTest() {
         ? '1,2,3,4,5,6'
         : document.getElementById('lTestPart').value;
 
+    // formData.append('parts', parts); dan KEYIN qo'shing
+const lQCount = document.querySelector('#modal-addListening input[name="questions_count"]');
+if (lQCount) formData.append('questions_count', lQCount.value);
     if (!name)                       { showToast('Test nomini kiriting', 'error'); return; }
     if (!category_id)                { showToast('Kategoriya tanlang', 'error'); return; }
     if (!selectedListeningAudioFile) { showToast('Audio fayl tanlang!', 'error'); return; }

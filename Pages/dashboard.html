@@ -420,9 +420,9 @@
             <a href="profile.html"
               ><i class="fa-regular fa-user"></i> My Profile</a
             >
-            <a href="sessions.html"
+            <!-- <a href="sessions.html"
               ><i class="fa-regular fa-clock"></i> My Sessions</a
-            >
+            > -->
             <div class="sb-dd-divider"></div>
             <a href="#" onclick="signOut()" class="sb-dd-signout"
               ><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a
@@ -480,15 +480,9 @@
             <i class="fa-solid fa-chevron-down filter-select-icon"></i>
           </div>
           <div class="filter-select-wrap">
-            <select class="filter-select" onchange="filterPart(this.value)">
-              <option value="">All Parts</option>
-              <option value="1">Part 1</option>
-              <option value="2">Part 2</option>
-              <option value="3">Part 3</option>
-              <option value="4">Part 4</option>
-              <option value="5">Part 5</option>
-              <!-- <option value="6">Part 6</option> -->
-            </select>
+              <select class="filter-select" id="partSelect" onchange="filterPart(this.value)">
+                <option value="">All Parts</option>
+              </select>
             <i class="fa-solid fa-chevron-down filter-select-icon"></i>
           </div>
           <div class="filter-select-wrap">
