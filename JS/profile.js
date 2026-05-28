@@ -197,7 +197,7 @@ if (planBadge) {
         document.getElementById('profileEmail').value     = user.email || '';
 
         // Completed tests
-        await loadCompletedTests(token);
+        // await loadCompletedTests(token);
 
     } catch (err) {
         console.error(err);
