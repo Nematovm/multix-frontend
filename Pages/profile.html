@@ -1,159 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MultiX — My Profile</title>
-<link rel="stylesheet" href="../Static/dashboard.css">
-<link rel="stylesheet" href="../Static/profile.css">
-<link rel="icon" type="image/svg+xml" href="/frontend/Logo/Vector 1.svg" />
-<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
-</head>
-<body>
-<div class="db-layout">
-
-  <!-- SIDEBAR -->
-  <aside class="db-sidebar">
-    <div class="sb-logo">
-      <a href="../index.html" class="sb-logo-link"><img src="../Logo/MultiX.svg" alt=""></a>
-    </div>
-    <nav class="sb-nav">
-      <div class="sb-section-label">Practice Tests</div>
-      <a href="dashboard.html" class="sb-item">
-        <span class="sb-icon" style="color:#5bb8ff"><i class="fa-solid fa-book-open"></i></span>
-        Reading
-      </a>
-      <a href="#" class="sb-item sb-soon">
-        <span class="sb-icon" style="color:#c47eff"><i class="fa-solid fa-headphones-simple"></i></span>
-        Listening
-        <span class="sb-badge">Soon</span>
-      </a>
-      <a href="#" class="sb-item sb-soon">
-        <span class="sb-icon" style="color:#4ede8a"><i class="fa-solid fa-pen-nib"></i></span>
-        Writing
-        <span class="sb-badge">Soon</span>
-      </a>
-      <a href="#" class="sb-item sb-soon">
-        <span class="sb-icon" style="color:#ffaa55"><i class="fa-solid fa-microphone-lines"></i></span>
-        Speaking
-        <span class="sb-badge">Soon</span>
-      </a>
-    </nav>
-    <div class="sb-user">
-      <div class="sb-user-avatar">U</div>
-      <div class="sb-user-info">
-        <div class="sb-user-name">Loading...</div>
-        <div class="sb-user-role">Free Plan</div>
-      </div>
-      <button class="sb-user-menu" onclick="toggleUserMenu()">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-      </button>
-      <div class="sb-user-dropdown hidden" id="userDropdown">
-        <a href="profile.html"><i class="fa-regular fa-user"></i> My Profile</a>
-        <a href="sessions.html"><i class="fa-regular fa-clock"></i> My Sessions</a>
-        <div class="sb-dd-divider"></div>
-        <a href="#" onclick="signOut()" class="sb-dd-signout">
-          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
-        </a>
-      </div>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="db-main">
-    <header class="db-header">
-      <div class="dbh-left">
-        <button class="dbh-back" onclick="window.location.href='dashboard.html'">
-          <i class="fa-solid fa-arrow-left"></i> Back
-        </button>
-        <h1 class="dbh-title">My Profile</h1>
-      </div>
-    </header>
-
-    <div class="profile-page">
-
-      <!-- Avatar card — full width -->
-      <div class="profile-card profile-card--full">
-        <div class="pc-avatar-wrap">
-          <div class="pc-avatar" id="profileAvatar">U</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MultiX — My Profile</title>
+    <link rel="stylesheet" href="../Static/dashboard.css" />
+    <link rel="stylesheet" href="../Static/profile.css" />
+    <link rel="icon" type="image/svg+xml" href="/frontend/Logo/Vector 1.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="db-layout">
+      <!-- SIDEBAR -->
+      <aside class="db-sidebar">
+        <div class="sb-logo">
+          <a href="../index.html" class="sb-logo-link"
+            ><img src="../Logo/MultiX.svg" alt=""
+          /></a>
         </div>
-        <div class="pc-user-info">
-          <h2 id="pcFullName">Loading...</h2>
-          <p id="pcEmail" class="pc-email"></p>
-          <span class="pc-badge" id="pcPlanBadge">Free Plan</span>
+        <nav class="sb-nav">
+          <div class="sb-section-label">Practice Tests</div>
+          <a href="dashboard.html" class="sb-item">
+            <span class="sb-icon" style="color: #5bb8ff"
+              ><i class="fa-solid fa-book-open"></i
+            ></span>
+            Reading
+          </a>
+          <a href="#" class="sb-item sb-soon">
+            <span class="sb-icon" style="color: #c47eff"
+              ><i class="fa-solid fa-headphones-simple"></i
+            ></span>
+            Listening
+            <span class="sb-badge">Soon</span>
+          </a>
+          <a href="#" class="sb-item sb-soon">
+            <span class="sb-icon" style="color: #4ede8a"
+              ><i class="fa-solid fa-pen-nib"></i
+            ></span>
+            Writing
+            <span class="sb-badge">Soon</span>
+          </a>
+          <a href="#" class="sb-item sb-soon">
+            <span class="sb-icon" style="color: #ffaa55"
+              ><i class="fa-solid fa-microphone-lines"></i
+            ></span>
+            Speaking
+            <span class="sb-badge">Soon</span>
+          </a>
+        </nav>
+        <div class="sb-user">
+          <div class="sb-user-avatar">U</div>
+          <div class="sb-user-info">
+            <div class="sb-user-name">Loading...</div>
+            <div class="sb-user-role">Free Plan</div>
+          </div>
+          <button class="sb-user-menu" onclick="toggleUserMenu()">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          <div class="sb-user-dropdown hidden" id="userDropdown">
+            <a href="profile.html"
+              ><i class="fa-regular fa-user"></i> My Profile</a
+            >
+            <a href="sessions.html"
+              ><i class="fa-regular fa-clock"></i> My Sessions</a
+            >
+            <div class="sb-dd-divider"></div>
+            <a href="#" onclick="signOut()" class="sb-dd-signout">
+              <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            </a>
+          </div>
         </div>
-      </div>
+      </aside>
 
-      <!-- 2-column grid -->
-      <div class="profile-grid">
+      <!-- MAIN -->
+      <main class="db-main">
+        <header class="db-header">
+          <div class="dbh-left">
+            <button
+              class="dbh-back"
+              onclick="window.location.href = 'dashboard.html'"
+            >
+              <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <h1 class="dbh-title">My Profile</h1>
+          </div>
+        </header>
 
-        <!-- LEFT column -->
-        <div class="profile-col">
-
-          <!-- Personal Information -->
-          <div class="profile-section">
-            <h3 class="ps-title">Personal Information</h3>
-            <div class="ps-body">
-              <div class="ps-field-row">
-                <div class="ps-field">
-                  <label>First Name</label>
-                  <input type="text" id="profileFirstName" placeholder="First name">
-                </div>
-                <div class="ps-field">
-                  <label>Last Name</label>
-                  <input type="text" id="profileLastName" placeholder="Last name">
-                </div>
-              </div>
-              <div class="ps-field">
-                <label>Email</label>
-                <input type="email" id="profileEmail" disabled>
-              </div>
-              <button class="ps-btn" onclick="saveProfile()">
-                <i class="fa-solid fa-check"></i> Save Changes
-              </button>
+        <div class="profile-page">
+          <!-- Avatar card — full width -->
+          <div class="profile-card profile-card--full">
+            <div class="pc-avatar-wrap">
+              <div class="pc-avatar" id="profileAvatar">U</div>
+            </div>
+            <div class="pc-user-info">
+              <h2 id="pcFullName">Loading...</h2>
+              <p id="pcEmail" class="pc-email"></p>
+              <span class="pc-badge" id="pcPlanBadge">Free Plan</span>
             </div>
           </div>
 
-          <!-- Change Password -->
-          <div class="profile-section">
-            <h3 class="ps-title">Change Password</h3>
-            <div class="ps-body">
-              <div class="ps-field">
-                <label>Current Password</label>
-                <input type="password" id="oldPassword" placeholder="Current password">
+          <!-- 2-column grid -->
+          <div class="profile-grid">
+            <!-- LEFT column -->
+            <div class="profile-col">
+              <!-- Personal Information -->
+              <div class="profile-section">
+                <h3 class="ps-title">Personal Information</h3>
+                <div class="ps-body">
+                  <div class="ps-field-row">
+                    <div class="ps-field">
+                      <label>First Name</label>
+                      <input
+                        type="text"
+                        id="profileFirstName"
+                        placeholder="First name"
+                      />
+                    </div>
+                    <div class="ps-field">
+                      <label>Last Name</label>
+                      <input
+                        type="text"
+                        id="profileLastName"
+                        placeholder="Last name"
+                      />
+                    </div>
+                  </div>
+                  <div class="ps-field">
+                    <label>Email</label>
+                    <input type="email" id="profileEmail" disabled />
+                  </div>
+                  <button class="ps-btn" onclick="saveProfile()">
+                    <i class="fa-solid fa-check"></i> Save Changes
+                  </button>
+                </div>
               </div>
-              <div class="ps-field">
-                <label>New Password</label>
-                <input type="password" id="newPassword" placeholder="New password">
+
+              <!-- Change Password -->
+              <div class="profile-section">
+                <h3 class="ps-title">Change Password</h3>
+                <div class="ps-body">
+                  <div class="ps-field">
+                    <label>Current Password</label>
+                    <input
+                      type="password"
+                      id="oldPassword"
+                      placeholder="Current password"
+                    />
+                  </div>
+                  <div class="ps-field">
+                    <label>New Password</label>
+                    <input
+                      type="password"
+                      id="newPassword"
+                      placeholder="New password"
+                    />
+                  </div>
+                  <div class="ps-field">
+                    <label>Confirm New Password</label>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Repeat new password"
+                    />
+                  </div>
+                  <button class="ps-btn" onclick="changePassword()">
+                    <i class="fa-solid fa-lock"></i> Change Password
+                  </button>
+                </div>
               </div>
-              <div class="ps-field">
-                <label>Confirm New Password</label>
-                <input type="password" id="confirmPassword" placeholder="Repeat new password">
-              </div>
-              <button class="ps-btn" onclick="changePassword()">
-                <i class="fa-solid fa-lock"></i> Change Password
-              </button>
             </div>
-          </div>
+            <!-- /LEFT -->
 
-        </div><!-- /LEFT -->
+            <!-- RIGHT column -->
+            <div class="profile-col">
+              <div class="profile-section profile-section--soon">
+                <!-- Soon overlay -->
+                <div class="ps-soon-overlay">
+                  <div class="ps-soon-badge">
+                    <i class="fa-solid fa-clock"></i> Coming Soon
+                  </div>
+                  <p class="ps-soon-text">
+                    Test history will be available soon
+                  </p>
+                </div>
 
-        <!-- RIGHT column -->
-        <div class="profile-col">
-          <div class="profile-section profile-section--soon">
-
-            <!-- Soon overlay -->
-<div class="ps-soon-overlay">
-  <div class="ps-soon-badge">
-    <i class="fa-solid fa-clock"></i> Coming Soon
-  </div>
-  <p class="ps-soon-text">Test history will be available soon</p>
-</div>
-
-            <h3 class="ps-title">Completed Tests</h3>
-            <div class="ps-body">
-<div id="completedTestsList">
+                <h3 class="ps-title">Completed Tests</h3>
+                <div class="ps-body">
+<div id="completedTestsStatic">
   <div class="ps-dummy-card">
     <div class="ps-dummy-left">
       <div class="ps-dummy-title"></div>
@@ -175,18 +216,17 @@
     </div>
   </div>
 </div>
+                </div>
+              </div>
             </div>
+            <!-- /RIGHT -->
           </div>
-        </div><!-- /RIGHT -->
-
-      </div><!-- /profile-grid -->
-
+          <!-- /profile-grid -->
+        </div>
+      </main>
     </div>
-  </main>
-</div>
-<script src="../JS/toast.js"></script>
-<script src="../JS/profile.js"></script>
-<script src="../JS/dashboard.js"></script>
-
-</body>
+    <script src="../JS/toast.js"></script>
+    <script src="../JS/profile.js"></script>
+    <script src="../JS/dashboard.js"></script>
+  </body>
 </html>
