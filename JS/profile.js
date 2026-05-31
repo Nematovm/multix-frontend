@@ -1,4 +1,6 @@
-const API_URL = 'https://api.multx.uz';
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'
+    : 'https://api.multx.uz';
 
 // ── Toast ──
 function showToast(message, type = 'success') {
