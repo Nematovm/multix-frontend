@@ -171,7 +171,7 @@ async function deleteCategory(id) {
     if (!confirm('Delete this category?')) return;
     const token = localStorage.getItem('cp_token');
     const res = await fetch(`${API_URL}/admin/categories/${id}/delete`, {
-        method: 'POST',                              // ← DELETE emas, POST
+        method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
     });
     if (res.ok) { showToast('Category deleted'); loadCategories(); }
