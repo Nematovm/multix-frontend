@@ -124,16 +124,34 @@ function renderTests(tests, section = 'reading') {
         return;
     }
 
-    // Guruhlamasdan to'g'ridan render qilish
-    content.innerHTML = `
-        <div class="test-group">
+    const groups = {};
+    tests.forEach(t => {
+        const cat = t.category_name || 'Other';
+        if (!groups[cat]) groups[cat] = [];
+        groups[cat].push(t);
+    });
+
+    content.innerHTML = Object.entries(groups).map(([catName, catTests]) => `
+        <div class="test-group" data-group="${catName}">
+            <div class="tg-header" onclick="toggleGroup(this)">
+                <div>
+                    <span class="tg-title">${catName}</span>
+                    <span class="tg-count">${catTests.length} test${catTests.length !== 1 ? 's' : ''}</span>
+                </div>
+                <i class="fa-solid fa-chevron-up tg-chevron"></i>
+            </div>
             <div class="tg-body">
-                ${tests.map(t => {
+                ${catTests.map(t => {
+                    const testId  = t.id;
                     const isPremium = t.type === 'premium';
                     const locked    = isPremium && !currentUser?.is_premium;
+
+                    // Parts label
                     const partsVal   = (t.parts || '').trim();
                     const isFull     = partsVal.includes(',');
                     const partsLabel = isFull ? partsVal : `Part ${partsVal}`;
+
+                    // Audio badge (listening uchun)
                     const audioBadge = section === 'listening' && t.has_audio
                         ? `<span class="tc-tag"><i class="fa-solid fa-headphones"></i> Audio</span>`
                         : '';
@@ -143,7 +161,7 @@ function renderTests(tests, section = 'reading') {
                          data-type="${t.type}"
                          data-level="${t.level}"
                          data-parts="${t.parts || ''}"
-                         data-category="${t.category_name || ''}">
+                         data-category="${catName}">
                         <div class="tc-left">
                             <div class="tc-info">
                                 <span class="tc-name">${t.name}</span>
@@ -156,7 +174,7 @@ function renderTests(tests, section = 'reading') {
                             <div class="tc-tags">
                                 <span class="tc-tag"><i class="fa-solid fa-chart-bar"></i> ${t.level || 'medium'}</span>
                                 <span class="tc-tag"><i class="fa-regular fa-clock"></i> ${t.duration || 60} min</span>
-                                <span class="tc-tag"><i class="fa-regular fa-circle-check"></i> ${t.questions_count || 35} questions</span>
+                                <span class="tc-tag"><i class="fa-regular fa-circle-check"></i> ${t.questions_count || (section === 'listening' ? 40 : 35)} questions</span>
                                 ${audioBadge}
                             </div>
                         </div>
@@ -164,14 +182,15 @@ function renderTests(tests, section = 'reading') {
                             ? `<button class="tc-btn premium-lock" onclick="showGate()">
                                    <i class="fa-solid fa-lock"></i> Unlock
                                </button>`
-                            : `<button class="tc-btn" onclick="startTest(${t.id}, '${section}')">
+                            : `<button class="tc-btn" onclick="startTest(${testId}, '${section}')">
                                    Start test
                                </button>`
                         }
                     </div>`;
                 }).join('')}
             </div>
-        </div>`;
+        </div>
+    `).join('');
 }
 
 function updatePartFilter(tests) {
