@@ -286,18 +286,16 @@ function toggleParts(val) {
 async function addTest() {
     const token = localStorage.getItem('cp_token');
     const format = document.getElementById('testFormat').value;
-
-    // parts: full → '1,2,3,4,5', part → tanlangan raqam
     const parts = format === 'full'
         ? '1,2,3,4,5'
         : document.getElementById('testPart').value;
 
     const name = document.getElementById('testName').value.trim();
-    const category_id = document.getElementById('testCategory').value;
+    const category_id = 1; // hardcode — kategoriya so'ralmasin
 
     if (!name) { showToast('Enter test name', 'error'); return; }
-    if (!category_id) { showToast('Select category', 'error'); return; }
     if (!selectedJsonFile) { showToast('JSON fayl tanlang!', 'error'); return; }
+    // if (!category_id) — bu tekshiruv olib tashlandi
 
     const formData = new FormData();
     formData.append('name', name);
