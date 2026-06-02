@@ -816,14 +816,13 @@ async function addListeningTest() {
         ? '1,2,3,4,5,6'
         : document.getElementById('lTestPart').value;
 
-    // formData.append('parts', parts); dan KEYIN qo'shing
-const lQCount = document.querySelector('#modal-addListening input[name="questions_count"]');
-if (lQCount) formData.append('questions_count', lQCount.value);
+    // Validatsiya AVVAL
     if (!name)                       { showToast('Test nomini kiriting', 'error'); return; }
     if (!category_id)                { showToast('Kategoriya tanlang', 'error'); return; }
     if (!selectedListeningAudioFile) { showToast('Audio fayl tanlang!', 'error'); return; }
     if (!selectedListeningJsonFile)  { showToast('JSON fayl tanlang!', 'error'); return; }
 
+    // formData KEYIN e'lon qilinadi
     const formData = new FormData();
     formData.append('name',        name);
     formData.append('category_id', category_id);
