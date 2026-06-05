@@ -62,75 +62,37 @@
     <!-- ── DASHBOARD ── -->
     <section id="sec-dashboard">
       <header class="db-header">
-        <div class="dbh-left">
-          <h1 class="dbh-title">Dashboard</h1>
-        </div>
-        <div class="dbh-right">
-          <span class="admin-date" id="currentDate"></span>
-        </div>
+        <div class="dbh-left"><h1 class="dbh-title">Dashboard</h1></div>
+        <div class="dbh-right"><span class="admin-date" id="currentDate"></span></div>
       </header>
-
       <div class="admin-content">
         <div class="stats-grid">
           <div class="stat-card">
             <div class="sc-icon" style="background:#eef9f7;color:#2caa9a"><i class="fa-solid fa-users"></i></div>
-            <div class="sc-info">
-              <div class="sc-label">Total Users</div>
-              <div class="sc-value" id="stat-users">—</div>
-              <div class="sc-change up" id="stat-users-change"></div>
-            </div>
+            <div class="sc-info"><div class="sc-label">Total Users</div><div class="sc-value" id="stat-users">—</div></div>
           </div>
           <div class="stat-card">
             <div class="sc-icon" style="background:#eef9f7;color:#2caa9a"><i class="fa-solid fa-book"></i></div>
-            <div class="sc-info">
-              <div class="sc-label">Total Tests</div>
-              <div class="sc-value" id="stat-tests">—</div>
-              <div class="sc-change" id="stat-tests-change"></div>
-            </div>
+            <div class="sc-info"><div class="sc-label">Total Tests</div><div class="sc-value" id="stat-tests">—</div></div>
           </div>
           <div class="stat-card">
             <div class="sc-icon" style="background:#faeeda;color:#854f0b"><i class="fa-solid fa-crown"></i></div>
-            <div class="sc-info">
-              <div class="sc-label">Premium Users</div>
-              <div class="sc-value" id="stat-premium">—</div>
-              <div class="sc-change up" id="stat-premium-change"></div>
-            </div>
+            <div class="sc-info"><div class="sc-label">Premium Users</div><div class="sc-value" id="stat-premium">—</div></div>
           </div>
           <div class="stat-card">
             <div class="sc-icon" style="background:#eef9f7;color:#2caa9a"><i class="fa-solid fa-folder"></i></div>
-            <div class="sc-info">
-              <div class="sc-label">Categories</div>
-              <div class="sc-value" id="stat-cats">—</div>
-              <div class="sc-change" id="stat-cats-change"></div>
-            </div>
+            <div class="sc-info"><div class="sc-label">Categories</div><div class="sc-value" id="stat-cats">—</div></div>
           </div>
         </div>
-
         <div class="charts-grid">
           <div class="chart-card">
-            <div class="chart-card-header">
-              <div>
-                <div class="chart-title">User Growth</div>
-                <div class="chart-sub">New registrations per month</div>
-              </div>
-            </div>
-            <div class="chart-legend">
-              <span><span class="leg-dot" style="background:#2caa9a"></span>New users</span>
-              <span><span class="leg-dot" style="background:#f5a623"></span>Premium</span>
-            </div>
+            <div class="chart-card-header"><div><div class="chart-title">User Growth</div><div class="chart-sub">New registrations per month</div></div></div>
+            <div class="chart-legend"><span><span class="leg-dot" style="background:#2caa9a"></span>New users</span><span><span class="leg-dot" style="background:#f5a623"></span>Premium</span></div>
             <div style="position:relative;height:220px"><canvas id="chartUsers"></canvas></div>
           </div>
           <div class="chart-card">
-            <div class="chart-card-header">
-              <div>
-                <div class="chart-title">User type</div>
-                <div class="chart-sub">Free vs Premium</div>
-              </div>
-            </div>
-            <div class="chart-legend">
-              <span><span class="leg-dot" style="background:#2caa9a"></span>Free</span>
-              <span><span class="leg-dot" style="background:#f5a623"></span>Premium</span>
-            </div>
+            <div class="chart-card-header"><div><div class="chart-title">User type</div><div class="chart-sub">Free vs Premium</div></div></div>
+            <div class="chart-legend"><span><span class="leg-dot" style="background:#2caa9a"></span>Free</span><span><span class="leg-dot" style="background:#f5a623"></span>Premium</span></div>
             <div style="position:relative;height:220px"><canvas id="chartDoughnut"></canvas></div>
           </div>
         </div>
@@ -153,19 +115,20 @@
             <input type="text" class="admin-search" placeholder="Search tests..." oninput="searchTable('testsTable', this.value)">
           </div>
           <table class="admin-table" id="testsTable">
-<thead>
-  <tr>
-    <th>Name</th>
-    <th>Category</th>
-    <th>Level</th>
-    <th>Format</th>
-    <th>Type</th>
-    <th>PDF</th>
-    <th>Actions</th>
-  </tr>
-</thead>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Level</th>
+                <th>Format</th>
+                <th>Type</th>
+                <th>Mode</th><!-- ← YANGI -->
+                <th>Files</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
             <tbody id="testsBody">
-              <tr><td colspan="6" class="table-empty">Loading...</td></tr>
+              <tr><td colspan="8" class="table-empty">Loading...</td></tr>
             </tbody>
           </table>
         </div>
@@ -177,42 +140,25 @@
       <header class="db-header">
         <div class="dbh-left"><h1 class="dbh-title">Categories</h1></div>
         <div class="dbh-right">
-          <button class="admin-btn primary" onclick="openModal('addCategory')">
-            <i class="fa-solid fa-plus"></i> Add Category
-          </button>
+          <button class="admin-btn primary" onclick="openModal('addCategory')"><i class="fa-solid fa-plus"></i> Add Category</button>
         </div>
       </header>
       <div class="admin-content">
-        <div class="categories-grid" id="categoriesGrid">
-          <div class="cat-empty">Loading...</div>
-        </div>
+        <div class="categories-grid" id="categoriesGrid"><div class="cat-empty">Loading...</div></div>
       </div>
     </section>
 
     <!-- ── USERS ── -->
     <section id="sec-users" class="hidden">
-      <header class="db-header">
-        <div class="dbh-left"><h1 class="dbh-title">Users</h1></div>
-      </header>
+      <header class="db-header"><div class="dbh-left"><h1 class="dbh-title">Users</h1></div></header>
       <div class="admin-content">
         <div class="admin-table-card">
           <div class="atc-header">
             <input type="text" class="admin-search" placeholder="Search users..." oninput="searchTable('usersTable', this.value)">
           </div>
           <table class="admin-table" id="usersTable">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Plan</th>
-                <th>Verified</th>
-                <th>Joined</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="usersBody">
-              <tr><td colspan="6" class="table-empty">Loading...</td></tr>
-            </tbody>
+            <thead><tr><th>Name</th><th>Email</th><th>Plan</th><th>Verified</th><th>Joined</th><th>Actions</th></tr></thead>
+            <tbody id="usersBody"><tr><td colspan="6" class="table-empty">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -220,91 +166,57 @@
 
     <!-- ── PREMIUM ── -->
     <section id="sec-premium" class="hidden">
-      <header class="db-header">
-        <div class="dbh-left"><h1 class="dbh-title">Premium Users</h1></div>
-      </header>
+      <header class="db-header"><div class="dbh-left"><h1 class="dbh-title">Premium Users</h1></div></header>
       <div class="admin-content">
         <div class="admin-table-card">
           <table class="admin-table" id="premiumTable">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Since</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="premiumBody">
-              <tr><td colspan="4" class="table-empty">Loading...</td></tr>
-            </tbody>
+            <thead><tr><th>Name</th><th>Email</th><th>Since</th><th>Actions</th></tr></thead>
+            <tbody id="premiumBody"><tr><td colspan="4" class="table-empty">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
     </section>
+
     <!-- ── LISTENING TESTS ── -->
-<section id="sec-listening" class="hidden">
-  <header class="db-header">
-    <div class="dbh-left"><h1 class="dbh-title">Listening Tests</h1></div>
-    <div class="dbh-right">
-      <button class="admin-btn primary" onclick="openModal('addListening')">
-        <i class="fa-solid fa-plus"></i> Add Listening Test
-      </button>
-    </div>
-  </header>
-  <div class="admin-content">
-    <div class="admin-table-card">
-      <div class="atc-header">
-        <input type="text" class="admin-search" placeholder="Search listening tests..."
-               oninput="searchTable('listeningTable', this.value)">
+    <section id="sec-listening" class="hidden">
+      <header class="db-header">
+        <div class="dbh-left"><h1 class="dbh-title">Listening Tests</h1></div>
+        <div class="dbh-right">
+          <button class="admin-btn primary" onclick="openModal('addListening')"><i class="fa-solid fa-plus"></i> Add Listening Test</button>
+        </div>
+      </header>
+      <div class="admin-content">
+        <div class="admin-table-card">
+          <div class="atc-header">
+            <input type="text" class="admin-search" placeholder="Search listening tests..." oninput="searchTable('listeningTable', this.value)">
+          </div>
+          <table class="admin-table" id="listeningTable">
+            <thead>
+              <tr>
+                <th>Name</th><th>Category</th><th>Level</th><th>Format</th>
+                <th>Type</th><th>Mode</th><!-- ← YANGI --><th>Audio</th><th>JSON</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="listeningBody"><tr><td colspan="9" class="table-empty">Loading...</td></tr></tbody>
+          </table>
+        </div>
       </div>
-      <table class="admin-table" id="listeningTable">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Level</th>
-            <th>Format</th>
-            <th>Type</th>
-            <th>Audio</th>
-            <th>JSON</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="listeningBody">
-          <tr><td colspan="8" class="table-empty">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+    </section>
+
     <!-- ── FEEDBACKS ── -->
     <section id="sec-feedbacks" class="hidden">
       <header class="db-header">
         <div class="dbh-left"><h1 class="dbh-title">Feedbacks</h1></div>
         <div class="dbh-right">
-          <button class="admin-btn" onclick="loadFeedbacks('pending')" id="btn-pending" style="margin-right:8px">
-            <i class="fa-solid fa-clock"></i> Pending
-          </button>
-          <button class="admin-btn" onclick="loadFeedbacks('approved')" id="btn-approved">
-            <i class="fa-solid fa-check"></i> Approved
-          </button>
+          <button class="admin-btn" onclick="loadFeedbacks('pending')" id="btn-pending" style="margin-right:8px"><i class="fa-solid fa-clock"></i> Pending</button>
+          <button class="admin-btn" onclick="loadFeedbacks('approved')" id="btn-approved"><i class="fa-solid fa-check"></i> Approved</button>
         </div>
       </header>
       <div class="admin-content">
         <div class="admin-table-card">
           <table class="admin-table" id="feedbacksTable">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Rating</th>
-                <th>Comment</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="feedbacksBody">
-              <tr><td colspan="5" class="table-empty">Loading...</td></tr>
-            </tbody>
+            <thead><tr><th>User</th><th>Rating</th><th>Comment</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="feedbacksBody"><tr><td colspan="5" class="table-empty">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -313,132 +225,9 @@
   </main>
 </div>
 
-<!-- ── ADD LISTENING TEST MODAL ── -->
-<div class="modal-overlay hidden" id="modal-addListening">
-  <div class="admin-modal" style="max-width:600px">
-    <div class="modal-head">
-      <h3>Add Listening Test</h3>
-      <button onclick="closeModal('addListening')"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="modal-body">
-      <div class="form-field">
-        <label>Test Name *</label>
-        <input type="text" id="lTestName" placeholder="e.g. IELTS Listening Mock 1">
-      </div>
-
-      <div class="form-row">
-        <div class="form-field">
-          <label>Category *</label>
-          <select id="lTestCategory">
-            <option value="">Select category</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label>Access Type</label>
-          <select id="lTestType">
-            <option value="free">Free</option>
-            <option value="premium">Premium</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-field">
-          <label>Level</label>
-          <select id="lTestLevel">
-            <option value="easy">Easy</option>
-            <option value="medium" selected>Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label>Format</label>
-          <select id="lTestFormat" onchange="toggleListeningParts(this.value)">
-            <option value="full">Full Mock (4 parts)</option>
-            <option value="part">Single Part</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-field hidden" id="lPartSelectWrap">
-        <label>Part Number</label>
-        <select id="lTestPart">
-          <option value="1">Part 1</option>
-          <option value="2">Part 2</option>
-          <option value="3">Part 3</option>
-          <option value="4">Part 4</option>
-          <option value="5">Part 5</option>
-<option value="6">Part 6</option>
-        </select>
-      </div>
-
-      <div class="form-field">
-        <label>Duration (min)</label>
-        <input type="number" id="lTestDuration" value="40">
-      </div>
-<div class="form-field">
-  <label>Questions Count</label>
-  <input type="number" id="lTestQuestions" name="questions_count" value="40" min="1" max="100" />
-</div>
-
-      <div class="form-field">
-        <label>Audio File * (mp3, wav, ogg, m4a)</label>
-<div class="pdf-upload-area" id="lAudioUploadArea"
-     onclick="document.getElementById('lAudioFileInput').click()"
-     style="border:2px dashed #d0e2e8;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f5f9f8;text-align:center;min-height:100px;">
-          <i class="fa-solid fa-headphones" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
-          <div id="lAudioUploadText">Click to upload Audio file</div>
-          <div style="font-size:11px;color:var(--text-3);margin-top:4px">mp3, wav, ogg, m4a, aac</div>
-        </div>
-        <input type="file" id="lAudioFileInput" accept=".mp3,.wav,.ogg,.m4a,.aac"
-               style="display:none" onchange="onListeningAudioSelect(this)">
-      </div>
-
-<!-- hidden YO'Q — har doim ko'rinadi -->
-<div class="form-field" id="lMapFieldWrap">
-  <label>
-    Map Image
-    <span style="color:var(--text-3);font-weight:400;font-size:12px">
-      (ixtiyoriy — Map labelling part uchun)
-    </span>
-  </label>
-  <div class="pdf-upload-area" id="lMapUploadArea"
-       onclick="document.getElementById('lMapFileInput').click()"
-       style="border:2px dashed #d0e2e8;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f5f9f8;text-align:center;min-height:100px;">
-    <i class="fa-solid fa-map" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
-    <div id="lMapUploadText">Click to upload Map image</div>
-    <div style="font-size:11px;color:var(--text-3);margin-top:4px">png, jpg, jpeg, webp</div>
-  </div>
-  <input type="file" id="lMapFileInput" accept=".png,.jpg,.jpeg,.webp"
-         style="display:none" onchange="onListeningMapSelect(this)">
-</div>
-
-      <div class="form-field">
-        <label>JSON File * </label>
-        <div class="pdf-upload-area" id="lJsonUploadArea"
-             onclick="document.getElementById('lJsonFileInput').click()"
-             style="border:2px dashed #d0e2e8;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f5f9f8;text-align:center;min-height:100px;">
-          <i class="fa-solid fa-file-code" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
-          <div id="lJsonUploadText">Click to upload JSON file</div>
-          <div style="font-size:11px;color:var(--text-3);margin-top:4px">Only .json format</div>
-        </div>
-        <input type="file" id="lJsonFileInput" accept=".json"
-               style="display:none" onchange="onListeningJsonSelect(this)">
-      </div>
-
-      <div class="upload-progress hidden" id="lUploadProgress">
-        <div class="up-bar"><div class="up-fill" id="lUploadFill"></div></div>
-        <span id="lUploadStatus">Uploading...</span>
-      </div>
-
-      <button class="admin-btn primary full" onclick="addListeningTest()">
-        <i class="fa-solid fa-check"></i> Save Listening Test
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ── ADD TEST MODAL ── -->
+<!-- ══════════════════════════════════════════════
+     ADD READING TEST MODAL
+══════════════════════════════════════════════ -->
 <div class="modal-overlay hidden" id="modal-addTest">
   <div class="admin-modal" style="max-width:600px">
     <div class="modal-head">
@@ -446,6 +235,7 @@
       <button onclick="closeModal('addTest')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
+
       <div class="form-field">
         <label>Test Name *</label>
         <input type="text" id="testName" placeholder="e.g. MULTILEVEL Test 1">
@@ -454,9 +244,7 @@
       <div class="form-row">
         <div class="form-field">
           <label>Category *</label>
-          <select id="testCategory">
-            <option value="">Select category</option>
-          </select>
+          <select id="testCategory"><option value="">Select category</option></select>
         </div>
         <div class="form-field">
           <label>Access Type</label>
@@ -488,10 +276,8 @@
       <div class="form-field hidden" id="partSelectWrap">
         <label>Part Number</label>
         <select id="testPart">
-          <option value="1">Part 1</option>
-          <option value="2">Part 2</option>
-          <option value="3">Part 3</option>
-          <option value="4">Part 4</option>
+          <option value="1">Part 1</option><option value="2">Part 2</option>
+          <option value="3">Part 3</option><option value="4">Part 4</option>
           <option value="5">Part 5</option>
         </select>
       </div>
@@ -518,9 +304,10 @@
         </div>
       </div>
 
-<div class="form-field">
+      <div class="form-field">
         <label>JSON File *</label>
-        <div class="pdf-upload-area" id="jsonUploadArea" onclick="document.getElementById('jsonFileInput').click()"
+        <div class="pdf-upload-area" id="jsonUploadArea"
+             onclick="document.getElementById('jsonFileInput').click()"
              style="border:2px dashed #d0e2e8;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f5f9f8;text-align:center;min-height:100px;">
           <i class="fa-solid fa-file-code" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
           <div id="jsonUploadText">Click to upload JSON file</div>
@@ -528,6 +315,22 @@
         </div>
         <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="onJsonSelect(this)">
       </div>
+
+      <!-- ── YANGI: Recovery Mode toggle ── -->
+      <div class="form-field">
+        <label>Test Mode</label>
+        <div class="recovery-toggle-row">
+          <div class="recovery-toggle-label">
+            <strong><i class="fa-solid fa-rotate-left" style="margin-right:5px;color:#2caa9a"></i>Recovery Mode</strong>
+            <span>Yoqilsa: o'quvchi xato javoblarini 3 marta mashq qiladi</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="testRecoveryEnabled">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <!-- ── / Recovery toggle ── -->
 
       <div class="upload-progress hidden" id="uploadProgress">
         <div class="up-bar"><div class="up-fill" id="uploadFill"></div></div>
@@ -541,7 +344,138 @@
   </div>
 </div>
 
-<!-- ── QUESTIONS MODAL ── -->
+<!-- ══════════════════════════════════════════════
+     ADD LISTENING TEST MODAL
+══════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-addListening">
+  <div class="admin-modal" style="max-width:600px">
+    <div class="modal-head">
+      <h3>Add Listening Test</h3>
+      <button onclick="closeModal('addListening')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-field">
+        <label>Test Name *</label>
+        <input type="text" id="lTestName" placeholder="e.g. IELTS Listening Mock 1">
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Category *</label>
+          <select id="lTestCategory"><option value="">Select category</option></select>
+        </div>
+        <div class="form-field">
+          <label>Access Type</label>
+          <select id="lTestType">
+            <option value="free">Free</option>
+            <option value="premium">Premium</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Level</label>
+          <select id="lTestLevel">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Format</label>
+          <select id="lTestFormat" onchange="toggleListeningParts(this.value)">
+            <option value="full">Full Mock (4 parts)</option>
+            <option value="part">Single Part</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field hidden" id="lPartSelectWrap">
+        <label>Part Number</label>
+        <select id="lTestPart">
+          <option value="1">Part 1</option><option value="2">Part 2</option>
+          <option value="3">Part 3</option><option value="4">Part 4</option>
+          <option value="5">Part 5</option><option value="6">Part 6</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>Duration (min)</label>
+        <input type="number" id="lTestDuration" value="40">
+      </div>
+
+      <div class="form-field">
+        <label>Questions Count</label>
+        <input type="number" id="lTestQuestions" name="questions_count" value="40" min="1" max="100">
+      </div>
+
+      <div class="form-field">
+        <label>Audio File * (mp3, wav, ogg, m4a)</label>
+        <div class="pdf-upload-area" id="lAudioUploadArea"
+             onclick="document.getElementById('lAudioFileInput').click()"
+             style="border:2px dashed #d0e2e8;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f5f9f8;text-align:center;min-height:100px;">
+          <i class="fa-solid fa-headphones" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
+          <div id="lAudioUploadText">Click to upload Audio file</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">mp3, wav, ogg, m4a, aac</div>
+        </div>
+        <input type="file" id="lAudioFileInput" accept=".mp3,.wav,.ogg,.m4a,.aac" style="display:none" onchange="onListeningAudioSelect(this)">
+      </div>
+
+      <div class="form-field" id="lMapFieldWrap">
+        <label>Map Image <span style="color:var(--text-3);font-weight:400;font-size:12px">(ixtiyoriy)</span></label>
+        <div class="pdf-upload-area" id="lMapUploadArea"
+             onclick="document.getElementById('lMapFileInput').click()"
+             style="border:2px dashed #d0e2e8;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f5f9f8;text-align:center;min-height:100px;">
+          <i class="fa-solid fa-map" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
+          <div id="lMapUploadText">Click to upload Map image</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">png, jpg, jpeg, webp</div>
+        </div>
+        <input type="file" id="lMapFileInput" accept=".png,.jpg,.jpeg,.webp" style="display:none" onchange="onListeningMapSelect(this)">
+      </div>
+
+      <div class="form-field">
+        <label>JSON File *</label>
+        <div class="pdf-upload-area" id="lJsonUploadArea"
+             onclick="document.getElementById('lJsonFileInput').click()"
+             style="border:2px dashed #d0e2e8;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f5f9f8;text-align:center;min-height:100px;">
+          <i class="fa-solid fa-file-code" style="font-size:28px;color:#2caa9a;margin-bottom:8px"></i>
+          <div id="lJsonUploadText">Click to upload JSON file</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">Only .json format</div>
+        </div>
+        <input type="file" id="lJsonFileInput" accept=".json" style="display:none" onchange="onListeningJsonSelect(this)">
+      </div>
+
+      <!-- ── YANGI: Recovery Mode toggle ── -->
+      <div class="form-field">
+        <label>Test Mode</label>
+        <div class="recovery-toggle-row">
+          <div class="recovery-toggle-label">
+            <strong><i class="fa-solid fa-rotate-left" style="margin-right:5px;color:#2caa9a"></i>Recovery Mode</strong>
+            <span>Yoqilsa: o'quvchi xato javoblarini 3 marta mashq qiladi</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="lTestRecoveryEnabled">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <!-- ── / Recovery toggle ── -->
+
+      <div class="upload-progress hidden" id="lUploadProgress">
+        <div class="up-bar"><div class="up-fill" id="lUploadFill"></div></div>
+        <span id="lUploadStatus">Uploading...</span>
+      </div>
+
+      <button class="admin-btn primary full" onclick="addListeningTest()">
+        <i class="fa-solid fa-check"></i> Save Listening Test
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── QUESTIONS MODAL (o'zgarmagan) ── -->
 <div class="modal-overlay hidden" id="modal-questions">
   <div class="admin-modal" style="max-width:780px">
     <div class="modal-head">
@@ -549,28 +483,14 @@
       <button onclick="closeModal('questions')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body" style="gap:20px">
-
-      <!-- Add question form -->
       <div style="background:var(--bg);border-radius:12px;padding:16px">
         <h4 style="font-size:14px;font-weight:600;margin-bottom:14px;color:var(--text)">Add Question</h4>
-
         <div class="form-row">
-          <div class="form-field">
-            <label>Part</label>
-            <select id="qPart">
-              <option value="1">Part 1</option>
-              <option value="2">Part 2</option>
-              <option value="3">Part 3</option>
-              <option value="4">Part 4</option>
-              <option value="5">Part 5</option>
-            </select>
+          <div class="form-field"><label>Part</label>
+            <select id="qPart"><option value="1">Part 1</option><option value="2">Part 2</option><option value="3">Part 3</option><option value="4">Part 4</option><option value="5">Part 5</option></select>
           </div>
-          <div class="form-field">
-            <label>Question #</label>
-            <input type="number" id="qNumber" value="1" min="1">
-          </div>
-          <div class="form-field">
-            <label>Type</label>
+          <div class="form-field"><label>Question #</label><input type="number" id="qNumber" value="1" min="1"></div>
+          <div class="form-field"><label>Type</label>
             <select id="qType" onchange="onQTypeChange(this.value)">
               <option value="tfng">True/False/Not Given</option>
               <option value="mcq">Multiple Choice (A,B,C,D)</option>
@@ -579,76 +499,36 @@
             </select>
           </div>
         </div>
-
-        <div class="form-field">
-          <label>Passage Text (optional — matn bo'lsa)</label>
-          <textarea id="qPassage" rows="3" placeholder="Reading passage..."></textarea>
-        </div>
-
-        <div class="form-field">
-          <label>Question Text</label>
-          <textarea id="qText" rows="2" placeholder="Question..."></textarea>
-        </div>
-
-        <!-- MCQ options -->
+        <div class="form-field"><label>Passage Text (optional)</label><textarea id="qPassage" rows="3" placeholder="Reading passage..."></textarea></div>
+        <div class="form-field"><label>Question Text</label><textarea id="qText" rows="2" placeholder="Question..."></textarea></div>
         <div id="mcqOptions" class="hidden">
           <div class="form-row">
-            <div class="form-field">
-              <label>A)</label>
-              <input type="text" id="qOptA" placeholder="Option A">
-            </div>
-            <div class="form-field">
-              <label>B)</label>
-              <input type="text" id="qOptB" placeholder="Option B">
-            </div>
+            <div class="form-field"><label>A)</label><input type="text" id="qOptA" placeholder="Option A"></div>
+            <div class="form-field"><label>B)</label><input type="text" id="qOptB" placeholder="Option B"></div>
           </div>
           <div class="form-row">
-            <div class="form-field">
-              <label>C)</label>
-              <input type="text" id="qOptC" placeholder="Option C">
-            </div>
-            <div class="form-field">
-              <label>D)</label>
-              <input type="text" id="qOptD" placeholder="Option D">
-            </div>
+            <div class="form-field"><label>C)</label><input type="text" id="qOptC" placeholder="Option C"></div>
+            <div class="form-field"><label>D)</label><input type="text" id="qOptD" placeholder="Option D"></div>
           </div>
         </div>
-
         <div class="form-row">
-          <div class="form-field">
-            <label>Correct Answer</label>
-            <select id="qAnswer" class="hidden">
-              <option value="True">True</option>
-              <option value="False">False</option>
-              <option value="Not Given">Not Given</option>
-            </select>
+          <div class="form-field"><label>Correct Answer</label>
+            <select id="qAnswer" class="hidden"><option value="True">True</option><option value="False">False</option><option value="Not Given">Not Given</option></select>
             <input type="text" id="qAnswerText" placeholder="e.g. A or True or answer word" class="hidden">
           </div>
-          <div class="form-field">
-            <label>Explanation (why?)</label>
-            <input type="text" id="qExplanation" placeholder="Why is this the correct answer?">
-          </div>
+          <div class="form-field"><label>Explanation (why?)</label><input type="text" id="qExplanation" placeholder="Why is this the correct answer?"></div>
         </div>
-
-        <button class="admin-btn primary" onclick="addQuestion()" style="margin-top:8px">
-          <i class="fa-solid fa-plus"></i> Add Question
-        </button>
+        <button class="admin-btn primary" onclick="addQuestion()" style="margin-top:8px"><i class="fa-solid fa-plus"></i> Add Question</button>
       </div>
-
-      <!-- Questions list -->
       <div>
-        <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--text)">
-          Questions List <span id="qCount" style="color:var(--text-3);font-weight:400"></span>
-        </h4>
-        <div id="questionsList" style="display:flex;flex-direction:column;gap:8px">
-          <p style="color:var(--text-3);font-size:13px">No questions yet</p>
-        </div>
+        <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--text)">Questions List <span id="qCount" style="color:var(--text-3);font-weight:400"></span></h4>
+        <div id="questionsList" style="display:flex;flex-direction:column;gap:8px"><p style="color:var(--text-3);font-size:13px">No questions yet</p></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── ADD CATEGORY MODAL ── -->
+<!-- ── ADD CATEGORY MODAL (o'zgarmagan) ── -->
 <div class="modal-overlay hidden" id="modal-addCategory">
   <div class="admin-modal">
     <div class="modal-head">
@@ -656,22 +536,14 @@
       <button onclick="closeModal('addCategory')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
-      <div class="form-field">
-        <label>Category Name</label>
-        <input type="text" id="catName" placeholder="e.g. Master Book">
-      </div>
-      <div class="form-field">
-        <label>Description</label>
-        <input type="text" id="catDesc" placeholder="Short description">
-      </div>
-      <button class="admin-btn primary full" onclick="addCategory()">
-        <i class="fa-solid fa-check"></i> Save Category
-      </button>
+      <div class="form-field"><label>Category Name</label><input type="text" id="catName" placeholder="e.g. Master Book"></div>
+      <div class="form-field"><label>Description</label><input type="text" id="catDesc" placeholder="Short description"></div>
+      <button class="admin-btn primary full" onclick="addCategory()"><i class="fa-solid fa-check"></i> Save Category</button>
     </div>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="../JS/admin.js?v=2"></script>
+<script src="../JS/admin.js?v=3"></script>
 </body>
 </html>

@@ -185,7 +185,7 @@ async function deleteCategory(id) {
     }
 }
 
-// ── TESTS ──
+// ── loadTests: Recovery ustuni qo'shilgan ──
 async function loadTests() {
     const token = localStorage.getItem('cp_token');
     const res = await fetch(`${API_URL}/admin/tests`, {
@@ -193,22 +193,22 @@ async function loadTests() {
     });
     const tests = await res.json();
     const tbody = document.getElementById('testsBody');
-
+ 
     if (!tests.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="table-empty">No tests yet. Add one!</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="table-empty">No tests yet. Add one!</td></tr>';
         return;
     }
-
+ 
     tbody.innerHTML = tests.map(t => {
-        // ── Format ko'rsatish: parts qiymatiga qarab ──
-        // parts = '1,2,3,4,5' → Full Mock
-        // parts = '1' yoki '2' yoki bitta raqam → Part N
         const partsVal = (t.parts || '').trim();
         const isFullMock = partsVal === '1,2,3,4,5' || partsVal.includes(',');
-        const formatLabel = isFullMock
-            ? 'Full Mock'
-            : partsVal ? `Part ${partsVal}` : t.name;
-
+        const formatLabel = isFullMock ? 'Full Mock' : partsVal ? `Part ${partsVal}` : t.name;
+ 
+        // ── YANGI: Recovery badge ──
+        const modeBadge = t.recovery_enabled
+            ? `<span class="badge-recovery"><i class="fa-solid fa-rotate-left"></i> Recovery</span>`
+            : `<span style="color:var(--text-3);font-size:11px">Standard</span>`;
+ 
         return `
         <tr>
             <td style="font-weight:600;color:var(--text)">${t.name}</td>
@@ -216,30 +216,18 @@ async function loadTests() {
             <td><span class="badge badge-${t.level}">${t.level}</span></td>
             <td>${formatLabel}</td>
             <td><span class="badge badge-${t.type}">${t.type}</span></td>
+            <td>${modeBadge}</td>
             <td>
-                ${t.has_json
-                    ? `<span style="color:#2caa9a;font-size:12px">
-                        <i class="fa-solid fa-file-code"></i> JSON
-                       </span>`
-                    : `<span style="color:var(--text-3);font-size:12px">No JSON</span>`
-                }
-                ${t.telegram_link
-                    ? `<a href="${t.telegram_link}" target="_blank" style="margin-left:8px;font-size:12px;color:#2caa9a">
-                        <i class="fa-brands fa-telegram"></i> TG
-                       </a>`
-                    : ''
-                }
+                ${t.has_json ? `<span style="color:#2caa9a;font-size:12px"><i class="fa-solid fa-file-code"></i> JSON</span>` : `<span style="color:var(--text-3);font-size:12px">No JSON</span>`}
+                ${t.telegram_link ? `<a href="${t.telegram_link}" target="_blank" style="margin-left:8px;font-size:12px;color:#2caa9a"><i class="fa-brands fa-telegram"></i> TG</a>` : ''}
             </td>
             <td>
                 <div class="act-btns">
-                    <button class="act-btn success" onclick="openQuestions(${t.id}, '${t.name}')">
-                        <i class="fa-solid fa-list"></i> Questions
-                    </button>
+                    <button class="act-btn success" onclick="openQuestions(${t.id}, '${t.name}')"><i class="fa-solid fa-list"></i> Questions</button>
                     <button class="act-btn danger" onclick="deleteTest(${t.id})">Delete</button>
                 </div>
             </td>
-        </tr>
-        `;
+        </tr>`;
     }).join('');
 }
 
@@ -286,19 +274,18 @@ function toggleParts(val) {
 async function addTest() {
     const token = localStorage.getItem('cp_token');
     const format = document.getElementById('testFormat').value;
-
-    // parts: full → '1,2,3,4,5', part → tanlangan raqam
+ 
     const parts = format === 'full'
         ? '1,2,3,4,5'
         : document.getElementById('testPart').value;
-
+ 
     const name = document.getElementById('testName').value.trim();
     const category_id = document.getElementById('testCategory').value;
-
+ 
     if (!name) { showToast('Enter test name', 'error'); return; }
     if (!category_id) { showToast('Select category', 'error'); return; }
     if (!selectedJsonFile) { showToast('JSON fayl tanlang!', 'error'); return; }
-
+ 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('category_id', category_id);
@@ -306,26 +293,28 @@ async function addTest() {
     formData.append('level', document.getElementById('testLevel').value);
     formData.append('type', document.getElementById('testType').value);
     formData.append('format', format);
-    formData.append('parts', parts);          // ← to'g'ri parts yuboriladi
+    formData.append('parts', parts);
     formData.append('duration', document.getElementById('testDuration').value);
     formData.append('questions_count', document.getElementById('testQuestions').value);
     formData.append('telegram_channel', document.getElementById('testTgChannel').value);
     formData.append('telegram_link', document.getElementById('testTgLink').value);
+    // ── YANGI ──
+    formData.append('recovery_enabled', document.getElementById('testRecoveryEnabled').checked ? 'true' : 'false');
     formData.append('json_file', selectedJsonFile);
-
+ 
     document.getElementById('uploadProgress').classList.remove('hidden');
     document.getElementById('uploadFill').style.width = '30%';
     document.getElementById('uploadStatus').textContent = 'Uploading...';
-
+ 
     try {
         const res = await fetch(`${API_URL}/admin/tests`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` },
             body: formData
         });
-
+ 
         document.getElementById('uploadFill').style.width = '100%';
-
+ 
         if (res.ok) {
             showToast('Test added successfully!');
             closeModal('addTest');
@@ -353,6 +342,8 @@ function resetTestForm() {
     document.getElementById('jsonUploadArea').classList.remove('selected');
     document.getElementById('jsonUploadText').textContent = 'Click to upload JSON file';
     document.getElementById('jsonFileInput').value = '';
+    // ── YANGI ──
+    document.getElementById('testRecoveryEnabled').checked = false;
     selectedJsonFile = null;
 }
 
@@ -674,6 +665,7 @@ let selectedListeningAudioFile = null;
 let selectedListeningJsonFile  = null;
 let selectedListeningMapFile   = null;
 
+// ── loadListeningTests: Recovery ustuni qo'shilgan ──
 async function loadListeningTests() {
     const token = localStorage.getItem('cp_token');
     const res = await fetch(`${API_URL}/admin/listening-tests`, {
@@ -681,16 +673,22 @@ async function loadListeningTests() {
     });
     const tests = await res.json();
     const tbody = document.getElementById('listeningBody');
-
+ 
     if (!tests.length) {
-        tbody.innerHTML = '<tr><td colspan="8" class="table-empty">No listening tests yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="table-empty">No listening tests yet.</td></tr>';
         return;
     }
-
+ 
     tbody.innerHTML = tests.map(t => {
         const partsVal    = (t.parts || '').trim();
         const isFull      = partsVal.includes(',') || partsVal === '1,2,3,4';
         const formatLabel = isFull ? 'Full Mock' : `Part ${partsVal}`;
+ 
+        // ── YANGI: Recovery badge ──
+        const modeBadge = t.recovery_enabled
+            ? `<span class="badge-recovery"><i class="fa-solid fa-rotate-left"></i> Recovery</span>`
+            : `<span style="color:var(--text-3);font-size:11px">Standard</span>`;
+ 
         return `
         <tr>
           <td style="font-weight:600;color:var(--text)">${t.name}</td>
@@ -698,16 +696,9 @@ async function loadListeningTests() {
           <td><span class="badge badge-${t.level}">${t.level}</span></td>
           <td>${formatLabel}</td>
           <td><span class="badge badge-${t.type}">${t.type}</span></td>
-          <td>
-            ${t.has_audio
-              ? `<span style="color:#2caa9a;font-size:12px"><i class="fa-solid fa-headphones"></i> Audio</span>`
-              : `<span style="color:var(--text-3);font-size:12px">No audio</span>`}
-          </td>
-          <td>
-            ${t.has_json
-              ? `<span style="color:#2caa9a;font-size:12px"><i class="fa-solid fa-file-code"></i> JSON</span>`
-              : `<span style="color:var(--text-3);font-size:12px">No JSON</span>`}
-          </td>
+          <td>${modeBadge}</td>
+          <td>${t.has_audio ? `<span style="color:#2caa9a;font-size:12px"><i class="fa-solid fa-headphones"></i> Audio</span>` : `<span style="color:var(--text-3);font-size:12px">No audio</span>`}</td>
+          <td>${t.has_json  ? `<span style="color:#2caa9a;font-size:12px"><i class="fa-solid fa-file-code"></i> JSON</span>`   : `<span style="color:var(--text-3);font-size:12px">No JSON</span>`}</td>
           <td>
             <div class="act-btns">
               <button class="act-btn danger" onclick="deleteListeningTest(${t.id})">Delete</button>
@@ -807,6 +798,7 @@ function onListeningMapSelect(input) {
     reader.readAsDataURL(file);
 }
 
+// ── addListeningTest: recovery_enabled qo'shilgan ──
 async function addListeningTest() {
     const token       = localStorage.getItem('cp_token');
     const name        = document.getElementById('lTestName').value.trim();
@@ -815,14 +807,12 @@ async function addListeningTest() {
     const parts       = format === 'full'
         ? '1,2,3,4,5,6'
         : document.getElementById('lTestPart').value;
-
-    // Validatsiya AVVAL
+ 
     if (!name)                       { showToast('Test nomini kiriting', 'error'); return; }
     if (!category_id)                { showToast('Kategoriya tanlang', 'error'); return; }
     if (!selectedListeningAudioFile) { showToast('Audio fayl tanlang!', 'error'); return; }
     if (!selectedListeningJsonFile)  { showToast('JSON fayl tanlang!', 'error'); return; }
-
-    // formData KEYIN e'lon qilinadi
+ 
     const formData = new FormData();
     formData.append('name',        name);
     formData.append('category_id', category_id);
@@ -832,16 +822,18 @@ async function addListeningTest() {
     formData.append('parts',       parts);
     formData.append('duration',    document.getElementById('lTestDuration').value);
     formData.append('questions_count', document.getElementById('lTestQuestions').value);
+    // ── YANGI ──
+    formData.append('recovery_enabled', document.getElementById('lTestRecoveryEnabled').checked ? 'true' : 'false');
     formData.append('audio_file',  selectedListeningAudioFile);
     formData.append('json_file',   selectedListeningJsonFile);
     if (selectedListeningMapFile) {
         formData.append('map_image', selectedListeningMapFile);
     }
-
+ 
     document.getElementById('lUploadProgress').classList.remove('hidden');
     document.getElementById('lUploadFill').style.width = '30%';
     document.getElementById('lUploadStatus').textContent = 'Uploading audio & JSON...';
-
+ 
     try {
         const res = await fetch(`${API_URL}/admin/listening-tests`, {
             method: 'POST',
@@ -849,7 +841,7 @@ async function addListeningTest() {
             body: formData
         });
         document.getElementById('lUploadFill').style.width = '100%';
-
+ 
         if (res.ok) {
             showToast('Listening test qo\'shildi!');
             closeModal('addListening');
@@ -881,31 +873,29 @@ async function deleteListeningTest(id) {
 function resetListeningForm() {
     document.getElementById('lTestName').value     = '';
     document.getElementById('lTestDuration').value = 40;
-
-    // Audio
+ 
     document.getElementById('lAudioUploadArea').classList.remove('selected');
     document.getElementById('lAudioUploadText').textContent = 'Click to upload Audio file';
     document.getElementById('lAudioFileInput').value = '';
     selectedListeningAudioFile = null;
-
-    // JSON
+ 
     document.getElementById('lJsonUploadArea').classList.remove('selected');
     document.getElementById('lJsonUploadText').textContent = 'Click to upload JSON file';
     document.getElementById('lJsonFileInput').value = '';
     selectedListeningJsonFile = null;
-
-    // Map
+ 
     const mapArea = document.getElementById('lMapUploadArea');
     if (mapArea) {
         mapArea.classList.remove('selected');
         mapArea.style.backgroundImage = '';
         mapArea.style.minHeight       = '';
         const icon = mapArea.querySelector('i');
-        const text = mapArea.querySelector('div');
         if (icon) icon.style.display = '';
-        if (text) text.style.opacity = '';
     }
     document.getElementById('lMapUploadText').textContent = 'Click to upload Map image';
     document.getElementById('lMapFileInput').value = '';
     selectedListeningMapFile = null;
+ 
+    // ── YANGI ──
+    document.getElementById('lTestRecoveryEnabled').checked = false;
 }
